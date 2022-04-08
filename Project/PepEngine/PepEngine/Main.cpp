@@ -7,8 +7,10 @@
 #endif
 #endif
 
-#include "PepEngine.h"
+#include "Engine.h"
 
 int main(int, char* []) {
+	pep::Engine pepEngine;
+	pepEngine.Run();
 	return 0;
 }
