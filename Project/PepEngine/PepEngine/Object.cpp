@@ -6,20 +6,9 @@ using namespace pep;
 
 Object::Object()
 	: m_pComponents{}
-	, m_Transform{}
 	, m_pParent{ nullptr }
 	, m_pChildren{}
 {
-}
-
-const Transform& Object::GetTransform() const
-{
-	return m_Transform;
-}
-
-void Object::SetTransform(const Transform& transform)
-{
-	m_Transform = transform;
 }
 
 void Object::AddComponent(const std::shared_ptr<BaseComponent>& pNewComponent)
@@ -74,32 +63,66 @@ void Object::Render()
 	}
 }
 
-void Object::SetParent(Object* pParent)
+void Object::SetParent(Object* pParent, bool keepWorldPosition)
 {
+	//Update position, rotation and scale
+	if (pParent == nullptr)
+		SetLocalTransform(GetWorldTransform());
+	else
+	{
+		if (keepWorldPosition)
+			SetLocalTransform(GetLocalTransform() - pParent->GetWorldTransform());
+		SetTransformDirty();
+	}
+	//Remove itself as a child from the previous parent (if any) 
+	if (m_pParent)
+		m_pParent->RemoveChild(this);
+	//Set the given parent on itself
 	m_pParent = pParent;
+	//Add itself as a child to the given parent
+	if (m_pParent)
+		m_pParent->AddChild(this);
 }
 
-Object* Object::GetParent() const
+void Object::SetTransformDirty()
 {
-	return m_pParent;
+	m_IsTransformDirty = true;
 }
 
-size_t Object::GetChildCount() const
+void Object::RemoveChild(Object* pChild)
 {
-	return m_pChildren.size();
-}
-
-Object* Object::GetChildAt(int index) const
-{
-	return m_pChildren.at(index);
-}
-
-void Object::RemoveChild(int index)
-{
-	m_pChildren.at(index) = nullptr;
 }
 
 void Object::AddChild(Object* pChild)
 {
-	m_pChildren.push_back(pChild);
+}
+
+void Object::SetLocalTransform(const glm::vec3& pos)
+{
+}
+
+const Transform2D& Object::GetWorldTransform()
+{
+	if (m_IsTransformDirty)
+	{
+		UpdateWorldTransform();
+	}
+	return m_WorldTransform;
+}
+
+const Transform2D& Object::GetLocalTransform() const
+{
+	return m_LocalTransform;
+}
+
+void Object::UpdateWorldTransform()
+{
+	if (m_IsTransformDirty)
+	{
+		if (m_pParent == nullptr)
+			m_WorldTransform = m_LocalTransform;
+		else
+			m_WorldTransform = m_pParent->GetWorldTransform() + m_LocalTransform;
+	}
+	m_IsTransformDirty = false;
 }
