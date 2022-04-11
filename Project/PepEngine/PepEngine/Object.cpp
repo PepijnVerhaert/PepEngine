@@ -67,21 +67,29 @@ void Object::SetParent(Object* pParent, bool keepWorldPosition)
 {
 	//Update position, rotation and scale
 	if (pParent == nullptr)
+	{
 		SetLocalTransform(GetWorldTransform());
+	}
 	else
 	{
 		if (keepWorldPosition)
-			SetLocalTransform(GetLocalTransform() - pParent->GetWorldTransform());
+		{
+			SetLocalTransform({ GetLocalTransform().GetPosition() - pParent->GetWorldTransform().GetPosition()});
+		}
 		SetTransformDirty();
 	}
 	//Remove itself as a child from the previous parent (if any) 
 	if (m_pParent)
+	{
 		m_pParent->RemoveChild(this);
+	}
 	//Set the given parent on itself
 	m_pParent = pParent;
 	//Add itself as a child to the given parent
 	if (m_pParent)
+	{
 		m_pParent->AddChild(this);
+	}
 }
 
 void Object::SetTransformDirty()
@@ -91,13 +99,24 @@ void Object::SetTransformDirty()
 
 void Object::RemoveChild(Object* pChild)
 {
+	for (size_t i = 0; i < m_pChildren.size(); ++i)
+	{
+		if (m_pChildren[i] == pChild)
+		{
+			m_pChildren[i] = nullptr;
+			return;
+		}
+	}
+	//Remove the given child from the children list
 }
 
 void Object::AddChild(Object* pChild)
 {
+	m_pChildren.push_back(pChild);
+	//	• Add the child to its children list.
 }
 
-void Object::SetLocalTransform(const glm::vec3& pos)
+void Object::SetLocalTransform(const Transform2D& transform)
 {
 }
 
@@ -122,7 +141,7 @@ void Object::UpdateWorldTransform()
 		if (m_pParent == nullptr)
 			m_WorldTransform = m_LocalTransform;
 		else
-			m_WorldTransform = m_pParent->GetWorldTransform() + m_LocalTransform;
+			m_WorldTransform.SetPosition(m_pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition());
 	}
 	m_IsTransformDirty = false;
 }

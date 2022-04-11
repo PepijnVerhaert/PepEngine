@@ -16,9 +16,9 @@ namespace pep
 		Object& operator=(const Object& other) = delete;
 		Object& operator=(Object&& other) = delete;
 
-		void SetParent(Object* pParent, bool keepWorldPosition);
+		void SetParent(Object* pParent, bool keepWorldTransform);
 		
-		void SetLocalTransform(const glm::vec3& pos);
+		void SetLocalTransform(const Transform2D& transform);
 		const Transform2D& GetWorldTransform();
 		const Transform2D& GetLocalTransform() const;
 		void UpdateWorldTransform();
