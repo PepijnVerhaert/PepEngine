@@ -7,13 +7,12 @@ namespace pep
 	class Object;
 	class Scene
 	{
-		friend Scene& SceneManager::CreateScene(const std::string& name);
+		friend Scene* SceneManager::CreateScene(const std::string& name);
 	public:
 		void Add(const std::shared_ptr<Object>& object);
 		const std::string& GetName() const;
 
 		void Update();
-		void Render() const;
 
 		~Scene();
 		Scene(const Scene& other) = delete;

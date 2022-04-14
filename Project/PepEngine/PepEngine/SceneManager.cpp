@@ -7,80 +7,126 @@ using namespace pep;
 
 void SceneManager::Update()
 {
-	m_pCurrentScene->Update();
+	for (size_t i{}; i < m_pActiveScenes.size(); ++i)
+	{
+		m_pActiveScenes[i]->Update();
+	}
 }
 
-void SceneManager::Render()
+Scene* SceneManager::CreateScene(const std::string& name)
 {
-	m_pCurrentScene->Render();
+	//if scene with name already exists return that scene
+	Scene* scene = GetScene(name);
+	if (scene != nullptr)
+	{
+		return scene;
+	}
+	//otherwise create new scene and return it
+	for (size_t i{}; i < m_pScenes.size(); ++i)
+	{
+		if (m_pScenes[i] == nullptr)
+		{
+			m_pScenes[i] = std::make_shared<Scene>(name);
+			return m_pScenes[i].get();
+		}
+	}
+	//scenes vector was full
+	m_pScenes.emplace_back(std::make_shared<Scene>(name));
+	return m_pScenes.back().get();
 }
 
-Scene& SceneManager::CreateScene(const std::string& name)
+Scene* SceneManager::GetScene(const std::string& name)
 {
 	for (size_t i{}; i < m_pScenes.size(); ++i)
 	{
-		if (m_pScenes[i] != nullptr)
+		if (m_pScenes[i] == nullptr)
 		{
-			if (m_pScenes[i].get()->GetName() == name)
-			{
-				std::cout << std::string{ "scene with name: " + name + " already exists\n" };
-				return *m_pScenes[i].get();
-			}
+			continue;
+		}
+
+		if (m_pScenes[i]->GetName() == name)
+		{
+			return m_pScenes[i].get();
 		}
 	}
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_pScenes.push_back(scene);
-	if (m_pCurrentScene == nullptr)
-	{
-		m_pCurrentScene = m_pScenes[0];
-	}
-	return *scene;
+	//scene was not found
+	return nullptr;
 }
 
-bool SceneManager::GetScene(const std::string& name, std::shared_ptr<Scene>& pScene)
+void pep::SceneManager::SetSceneInactive(const std::string& name)
+{
+	for (size_t i{}; i < m_pActiveScenes.size(); ++i)
+	{
+		if (m_pActiveScenes[i] == nullptr)
+		{
+			continue;
+		}
+		//find the right scene
+		if (m_pActiveScenes[i]->GetName() == name)
+		{
+			m_pActiveScenes[i] = nullptr;
+			return;
+		}
+	}
+	//scene was not active
+}
+
+Scene* pep::SceneManager::SetSceneActive(const std::string& name)
 {
 	for (size_t i{}; i < m_pScenes.size(); ++i)
 	{
-		if (m_pScenes[i] != nullptr)
+		if (m_pScenes[i] == nullptr)
 		{
-			if (m_pScenes[i].get()->GetName() == name)
+			continue;
+		}
+		//find the right scene
+		if (m_pScenes[i]->GetName() == name)
+		{
+			for (size_t j{}; j < m_pActiveScenes.size(); ++j)
 			{
-				pScene = m_pScenes[i];
-				return true;
+				if (m_pActiveScenes[j] != nullptr)
+				{
+					continue;
+				}
+				//find empty slot to assign
+				m_pActiveScenes[j] = m_pScenes[i];
+				return m_pActiveScenes[j].get();
 			}
+			//if there was no empty slot push back
+			m_pActiveScenes.push_back(m_pScenes[i]);
+			return m_pActiveScenes.back().get();
 		}
 	}
-	return false;
+	//right scene was not found
+	return nullptr;
 }
 
-bool SceneManager::RemoveScene(const std::string& name)
+void SceneManager::RemoveScene(const std::string& name)
 {
+	//remove from scenes
 	for (size_t i{}; i < m_pScenes.size(); ++i)
 	{
-		if (m_pScenes[i] != nullptr)
+		if (m_pScenes[i] == nullptr)
 		{
-			if (m_pScenes[i].get()->GetName() == name)
-			{
-				m_pScenes[i] = nullptr;
-				return true;
-			}
+			continue;
 		}
-	}
-	return false;
-}
 
-void SceneManager::SetCurrentScene(const std::string& name)
-{
-	for (size_t i{}; i < m_pScenes.size(); ++i)
-	{
-		if (m_pScenes[i] != nullptr)
+		if (m_pScenes[i]->GetName() == name)
 		{
-			if (m_pScenes[i].get()->GetName() == name)
-			{
-				m_pCurrentScene = m_pScenes[i];
-				return;
-			}
+			m_pScenes[i] = nullptr;
 		}
 	}
-	std::cout << std::string{ "scene with name: " + name + " not found\n" };
+	//remove from active scenes
+	for (size_t i{}; i < m_pActiveScenes.size(); ++i)
+	{
+		if (m_pActiveScenes[i] == nullptr)
+		{
+			continue;
+		}
+
+		if (m_pActiveScenes[i]->GetName() == name)
+		{
+			m_pActiveScenes[i] = nullptr;
+		}
+	}
 }

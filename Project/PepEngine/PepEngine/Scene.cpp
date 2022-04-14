@@ -26,11 +26,3 @@ void Scene::Update()
 		object->Update();
 	}
 }
-
-void Scene::Render() const
-{
-	for (auto& object : m_Objects)
-	{
-		object->Render();
-	}
-}

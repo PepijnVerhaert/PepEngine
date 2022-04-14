@@ -42,7 +42,8 @@ namespace pep
 		}
 
 		void Update();
-		void Render();
+		void Start();
+		void End();
 	protected:
 
 	private:

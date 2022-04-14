@@ -16,7 +16,6 @@ namespace pep
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 		virtual void Update() = 0;
-		virtual void Render() = 0;
 
 		const std::string& GetName() const { return m_Name; };
 	protected:

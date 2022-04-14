@@ -54,13 +54,12 @@ void Object::Update()
 	}
 }
 
-
-void Object::Render()
+void pep::Object::Start()
 {
-	for (auto pComponent : m_pComponents)
-	{
-		pComponent->Render();
-	}
+}
+
+void pep::Object::End()
+{
 }
 
 void Object::SetParent(Object* pParent, bool keepWorldPosition)
