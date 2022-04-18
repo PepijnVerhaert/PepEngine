@@ -8,6 +8,8 @@ Object::Object()
 	: m_pComponents{}
 	, m_pParent{ nullptr }
 	, m_pChildren{}
+	, m_Started{false}
+	, m_Ended{false}
 {
 }
 
@@ -54,12 +56,30 @@ void Object::Update()
 	}
 }
 
-void pep::Object::Start()
+void Object::Start()
 {
+	if (m_Started)
+	{
+		return;
+	}
+	m_Started = true;
+	//for (auto pComponent : m_pComponents)
+	//{
+	//	pComponent->Start();
+	//}
 }
 
-void pep::Object::End()
+void Object::End()
 {
+	if (m_Ended)
+	{
+		return;
+	}
+	m_Ended = true;
+	//for (auto pComponent : m_pComponents)
+	//{
+	//	pComponent->End();
+	//}
 }
 
 void Object::SetParent(Object* pParent, bool keepWorldPosition)

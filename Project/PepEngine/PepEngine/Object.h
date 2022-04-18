@@ -49,6 +49,9 @@ namespace pep
 		void RemoveChild(Object* pChild);
 		void AddChild(Object* pChild);
 
+		bool m_Started;
+		bool m_Ended;
+
 		bool m_IsTransformDirty;
 		Transform2D m_WorldTransform;
 		Transform2D m_LocalTransform;
