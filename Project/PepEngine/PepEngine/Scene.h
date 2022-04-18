@@ -9,12 +9,13 @@ namespace pep
 	{
 		friend Scene* SceneManager::CreateScene(const std::string& name);
 	public:
-		void Add(const std::shared_ptr<Object>& object);
+		void Add(const std::shared_ptr<Object>& pObject);
+		void Remove(const std::shared_ptr<Object>& pObject);
 		const std::string& GetName() const;
 
 		void Update();
 
-		~Scene();
+		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
