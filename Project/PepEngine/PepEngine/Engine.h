@@ -2,7 +2,7 @@
 struct SDL_Window;
 namespace pep
 {
-	class Engine
+	class Engine final
 	{
 	public:
 		void Initialize();
