@@ -44,7 +44,6 @@ namespace pep
 		void Update();
 		void Start();
 		void End();
-	protected:
 
 	private:
 		void RemoveChild(Object* pChild);

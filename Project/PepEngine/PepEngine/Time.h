@@ -3,7 +3,7 @@
 
 namespace pep
 {
-	class Time : public Singleton<Time>
+	class Time final : public Singleton<Time>
 	{
 	public:
 		float GetDeltaTime() const;
