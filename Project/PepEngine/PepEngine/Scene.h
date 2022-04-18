@@ -25,7 +25,7 @@ namespace pep
 		explicit Scene(const std::string& name);
 
 		std::string m_Name;
-		std::vector < std::shared_ptr<Object>> m_Objects{};
+		std::vector < std::shared_ptr<Object>> m_pObjects{};
 	};
 
 }

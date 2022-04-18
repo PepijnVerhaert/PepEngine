@@ -4,27 +4,45 @@
 
 using namespace pep;
 
-Scene::Scene(const std::string& name) : m_Name(name) {}
+Scene::Scene(const std::string& name)
+	: m_Name(name) 
+	, m_pObjects()
+{
+}
 
 void Scene::Add(const std::shared_ptr<Object>&pObject)
 {
-	for (auto& object : m_Objects)
+	//check if it's already in there
+	for (size_t i{}; i < m_pObjects.size(); ++i)
 	{
-		if (object == pObject)
+		if (m_pObjects[i] == pObject)
 		{
 			return;
 		}
 	}
-	m_Objects.push_back(pObject);
+
+	//look for empty spot
+	for (size_t i{}; i < m_pObjects.size(); ++i)
+	{
+		if (m_pObjects[i] == nullptr)
+		{
+			m_pObjects[i] = pObject;
+			return;
+		}
+	}
+
+	//no empty spot found
+	m_pObjects.push_back(pObject);
 }
 
 void Scene::Remove(const std::shared_ptr<Object>& pObject)
 {
-	for (auto& object : m_Objects)
+	for (size_t i{}; i < m_pObjects.size(); ++i)
 	{
-		if (object == pObject)
+		if (m_pObjects[i] == pObject)
 		{
-			object = nullptr;
+			m_pObjects[i] = nullptr;
+			return;
 		}
 	}
 }
@@ -36,8 +54,8 @@ const std::string& Scene::GetName() const
 
 void Scene::Update()
 {
-	for (auto& object : m_Objects)
+	for (size_t i{}; i < m_pObjects.size(); ++i)
 	{
-		object->Update();
+		m_pObjects[i]->Update();
 	}
 }
