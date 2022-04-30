@@ -135,7 +135,7 @@ void Object::AddChild(Object* pChild)
 	//	• Add the child to its children list.
 }
 
-void Object::SetLocalTransform(const Transform2D& transform)
+void Object::SetLocalTransform(const Transform2D& /*transform*/)
 {
 }
 

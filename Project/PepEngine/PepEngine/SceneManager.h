@@ -10,7 +10,7 @@ namespace pep
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene* CreateScene(const std::string& name);
+		Scene& CreateScene(const std::string& name);
 		void RemoveScene(const std::string& name);
 
 		Scene* GetScene(const std::string& name);

@@ -12,4 +12,5 @@
 #pragma warning(push, 0)
 #include <glm/glm.hpp>
 #include <SDL.h>
+#undef main
 #pragma warning (pop)

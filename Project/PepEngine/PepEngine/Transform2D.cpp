@@ -9,8 +9,8 @@ Transform2D::Transform2D()
 {
 }
 
-Transform2D::Transform2D(const glm::vec3& position)
-	: Transform2D{ position/*, {1.f, 1.f}, 0.f*/ }
+Transform2D::Transform2D(const glm::vec3& /*position*/)
+	//: Transform2D{ position/*, {1.f, 1.f}, 0.f*/ }
 {
 }
 
