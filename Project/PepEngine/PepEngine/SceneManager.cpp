@@ -26,11 +26,13 @@ Scene& SceneManager::CreateScene(const std::string& name)
 	{
 		if (m_pScenes[i] == nullptr)
 		{
+			//cant use make shared since only scenemanager is friended with scene
 			m_pScenes[i] = std::shared_ptr<Scene>( new Scene(name));
 			return *m_pScenes[i].get();
 		}
 	}
 	//scenes vector was full
+	//cant use make shared since only scenemanager is friended with scene
 	m_pScenes.emplace_back(std::shared_ptr<Scene>(new Scene(name)));
 	return *m_pScenes.back().get();
 }

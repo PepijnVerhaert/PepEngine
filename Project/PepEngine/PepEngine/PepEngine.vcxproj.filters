@@ -30,9 +30,6 @@
     <ClCompile Include="PepEnginePCH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.87\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
