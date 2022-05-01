@@ -19,5 +19,4 @@ namespace pep
 		bool m_QuitGame = false;
 		std::unique_ptr<ControllerManager> m_pControllerManager = std::make_unique<ControllerManager>();
 	};
-
 }

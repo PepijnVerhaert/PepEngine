@@ -8,7 +8,7 @@
 
 namespace pep
 {
-	class ControllerManager
+	class ControllerManager final
 	{
 	public:
 		ControllerManager();

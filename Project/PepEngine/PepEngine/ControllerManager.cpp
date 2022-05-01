@@ -159,7 +159,6 @@ void pep::ControllerManager::RemoveCommand(const ControllerButton& button, const
 		break;
 	}
 }
-
 bool pep::ControllerManager::IsButtonActive(const ControllerButton& button, const ButtonState& state, unsigned int playerId) const
 {
 	switch (state)
