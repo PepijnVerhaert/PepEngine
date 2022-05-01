@@ -25,6 +25,9 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{64da1179-0801-4440-aaf8-5c7fe73dfda5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{a71295be-a3c4-4cb7-a673-bf89e08c2874}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="BaseCommand.cpp">
       <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="BaseCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHelper.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,24 +1,23 @@
 #pragma once
-#include <XInput.h>
 #include "Singleton.h"
+#include "InputHelper.h"
+#include "ControllerManager.h"
+
+#include <memory>
 
 namespace pep
 {
-	enum class ControllerButton
-	{
-		ButtonA,
-		ButtonB,
-		ButtonX,
-		ButtonY
-	};
-
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-		bool ProcessInput();
-		bool IsPressed(ControllerButton button) const;
+		bool QuitGame();
+		void Update();
+		bool IsControllerButtonActive(const ControllerButton& button, const ButtonState& state, unsigned int playerId) const;
 	private:
-		XINPUT_STATE m_CurrentState{};
+		friend class Singleton<InputManager>;
+		InputManager() = default;
+		bool m_QuitGame = false;
+		std::unique_ptr<ControllerManager> m_pControllerManager = std::make_unique<ControllerManager>();
 	};
 
 }

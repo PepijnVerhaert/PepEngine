@@ -77,16 +77,18 @@ void pep::Engine::Run()
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
 
-		bool doContinue = true;
+		bool quit = false;
 		int msPerFrame = 16;
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		auto start = std::chrono::high_resolution_clock::now();
-		while (doContinue)
+		while (!quit)
 		{
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			Time::GetInstance().SetDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
 
-			doContinue = input.ProcessInput();
+			input.Update();
+			quit = input.QuitGame();
+
 			sceneManager.Update();
 			renderer.Render();
 

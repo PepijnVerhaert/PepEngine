@@ -1,3 +1,4 @@
+#include "PepEnginePCH.h"
 #include "BaseCommand.h"
 
 using namespace pep;
