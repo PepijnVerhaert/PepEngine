@@ -50,11 +50,6 @@ void pep::Engine::Initialize()
 	Renderer::GetInstance().Init(m_Window);
 }
 
-void pep::Engine::LoadGame() const
-{
-	SceneManager::GetInstance().CreateScene("Scene");
-}
-
 void pep::Engine::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
@@ -63,14 +58,14 @@ void pep::Engine::Cleanup()
 	SDL_Quit();
 }
 
-void pep::Engine::Run()
+void pep::Engine::Run(const std::function<void()>& loadGame)
 {
 	Initialize();
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
-	LoadGame();
+	loadGame();
 
 	{
 		auto& renderer = Renderer::GetInstance();
