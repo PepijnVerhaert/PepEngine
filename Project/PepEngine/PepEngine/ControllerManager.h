@@ -24,6 +24,7 @@ namespace pep
 	private:
 		class ControllerManagerImpl;
 		ControllerManagerImpl* m_pImpl;
+		size_t m_MaxControllers;
 
 		std::vector<std::map<ControllerButton, std::shared_ptr<BaseCommand>>> m_DownCommands;
 		std::vector<std::map<ControllerButton, std::shared_ptr<BaseCommand>>> m_PressedCommands;

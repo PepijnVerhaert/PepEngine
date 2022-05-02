@@ -13,5 +13,6 @@ void TestComponent::Update()
 
 void TestComponent::Test()
 {
+	++m_TimesPressed;
 	std::cout << "test function in TestComponent called " << m_TimesPressed << " times\n";
 }

@@ -38,57 +38,68 @@ public:
 
 	void Update()
 	{
+		//update timer
 		m_activityCheckTimeAcc -= GameTime::GetInstance().GetDeltaTime();
 
+		//check for each controller
 		for (size_t i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
+			//check if controller is active or it's time to check inactive controllers
 			if (!m_ActiveControllers[i] && m_activityCheckTimeAcc > 0.f)
 			{
 				continue;
 			}
 
-			CopyMemory(&m_PreviousStates, &m_CurrentStates, sizeof(XINPUT_STATE));
-			ZeroMemory(&m_CurrentStates, sizeof(XINPUT_STATE));
+			//copy current to previous and clear current
+			CopyMemory(&m_PreviousStates[i], &m_CurrentStates[i], sizeof(XINPUT_STATE));
+			ZeroMemory(&m_CurrentStates[i], sizeof(XINPUT_STATE));
+			//get current
 			auto result = XInputGetState(DWORD(i), &m_CurrentStates[i]);
 
+			//check if controller is connected
 			if (result == ERROR_SUCCESS)
 			{
+				//set button states correct
 				auto buttonChanges = m_CurrentStates[i].Gamepad.wButtons ^ m_PreviousStates[i].Gamepad.wButtons;
 				m_ButtonsPressedThisFrame[i] = buttonChanges & m_CurrentStates[i].Gamepad.wButtons;
 				m_ButtonsReleasedThisFrame[i] = buttonChanges & (~m_CurrentStates[i].Gamepad.wButtons);
 
+				//if it was time to check set controller to active
 				if (m_activityCheckTimeAcc <= 0.f)
 				{
 					m_ActiveControllers[i] = true;
 				}
 			}
+			//if failed no controller is connected
 			else
 			{
 				m_ActiveControllers[i] = false;
+				//clear memory so we dont keep getting last input
 				ZeroMemory(&m_CurrentStates[i], sizeof(XINPUT_STATE));
 				ZeroMemory(&m_PreviousStates[i], sizeof(XINPUT_STATE));
 			}
 		}
 
+		//if it was time to check reset timer
 		if (m_activityCheckTimeAcc <= 0.f)
 		{
 			m_activityCheckTimeAcc = m_activityCheckTimeMax;
 		}
 	}
 
-	bool IsDown(const ControllerButton& button, unsigned int playerId) const 
+	bool IsDown(const ControllerButton& button, size_t playerId) const 
 	{ 
 		if (playerId >= XUSER_MAX_COUNT) return false;
 		if (!m_ActiveControllers[playerId]) return false;
 		return m_CurrentStates[playerId].Gamepad.wButtons & static_cast<unsigned int>(button); 
 	};
-	bool IsPressedThisFrame(const ControllerButton& button, unsigned int playerId) const 
+	bool IsPressedThisFrame(const ControllerButton& button, size_t playerId) const
 	{ 
 		if (playerId >= XUSER_MAX_COUNT) return false;
 		if (!m_ActiveControllers[playerId]) return false;
 		return m_ButtonsPressedThisFrame[playerId] & static_cast<unsigned int>(button);
 	};
-	bool IsReleasedThisFrame(const ControllerButton& button, unsigned int playerId) const 
+	bool IsReleasedThisFrame(const ControllerButton& button, size_t playerId) const
 	{ 
 		if (playerId >= XUSER_MAX_COUNT) return false;
 		if (!m_ActiveControllers[playerId]) return false;
@@ -112,10 +123,12 @@ pep::ControllerManager::ControllerManager()
 	, m_DownCommands{}
 	, m_ReleasedCommands{}
 	, m_pImpl{}
+	, m_MaxControllers{4}
 {
-	m_PressedCommands.resize(4, {});
-	m_DownCommands.resize(4, {});
-	m_ReleasedCommands.resize(4, {});
+	m_pImpl = new ControllerManagerImpl;
+	m_PressedCommands.resize(m_MaxControllers, {});
+	m_DownCommands.resize(m_MaxControllers, {});
+	m_ReleasedCommands.resize(m_MaxControllers, {});
 }
 
 pep::ControllerManager::~ControllerManager()
@@ -125,7 +138,36 @@ pep::ControllerManager::~ControllerManager()
 
 void pep::ControllerManager::Update()
 {
+	//update commands
 	m_pImpl->Update();
+
+	//execute commands
+	for (size_t i = 0; i < m_MaxControllers; ++i)
+	{
+		for (const auto& command : m_DownCommands[i])
+		{
+			if (m_pImpl->IsDown(command.first, i))
+			{
+				command.second->Execute();
+			}
+		}
+
+		for (const auto& command : m_PressedCommands[i])
+		{
+			if (m_pImpl->IsPressedThisFrame(command.first, i))
+			{
+				command.second->Execute();
+			}
+		}
+
+		for (const auto& command : m_ReleasedCommands[i])
+		{
+			if (m_pImpl->IsReleasedThisFrame(command.first, i))
+			{
+				command.second->Execute();
+			}
+		}
+	}
 }
 
 void pep::ControllerManager::AddCommand(const ControllerButton& button, const ButtonState& state, std::shared_ptr<BaseCommand> command, unsigned int playerId)

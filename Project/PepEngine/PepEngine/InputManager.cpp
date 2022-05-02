@@ -19,6 +19,8 @@ void InputManager::Update()
 		//process events for IMGUI
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
+	if(m_pControllerManager)
+		m_pControllerManager->Update();
 }
 
 bool pep::InputManager::IsControllerButtonActive(const ControllerButton& button, const ButtonState& state, unsigned int playerId) const
