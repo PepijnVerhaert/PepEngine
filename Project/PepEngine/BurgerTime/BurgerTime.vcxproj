@@ -160,6 +160,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
+    <ClCompile Include="TestCommand.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestCommand.h" />
+    <ClInclude Include="TestComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

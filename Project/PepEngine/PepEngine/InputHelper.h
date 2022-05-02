@@ -23,8 +23,8 @@ namespace pep
 	enum class ButtonState
 	{
 		Down,
-		Pressed,
-		Released
+		PressedThisFrame,
+		ReleasedThisFrame
 	};
 
 }

@@ -8,7 +8,7 @@ namespace pep
 	class BaseComponent
 	{
 	public:
-		BaseComponent(const std::weak_ptr<Object>& object, const std::string& name) { m_pObject = object; m_Name = name; };
+		BaseComponent(const std::weak_ptr<Object>& object) { m_pObject = object;};
 		virtual ~BaseComponent() = default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
@@ -16,11 +16,7 @@ namespace pep
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 		virtual void Update() = 0;
-
-		const std::string& GetName() const { return m_Name; };
 	protected:
-
-		std::string m_Name;
 		std::weak_ptr<Object> m_pObject;
 	};
 }

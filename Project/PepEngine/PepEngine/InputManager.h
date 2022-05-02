@@ -13,6 +13,10 @@ namespace pep
 		bool QuitGame();
 		void Update();
 		bool IsControllerButtonActive(const ControllerButton& button, const ButtonState& state, unsigned int playerId) const;
+
+		void AddControllerCommand(const ControllerButton& button, const ButtonState& state, std::shared_ptr<BaseCommand> command, unsigned int playerId);
+		void RemoveControllerCommand(const ControllerButton& button, const ButtonState& state, unsigned int playerId);
+
 	private:
 		friend class Singleton<InputManager>;
 		InputManager() = default;

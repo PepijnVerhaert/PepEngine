@@ -82,13 +82,13 @@ public:
 		if (!m_ActiveControllers[playerId]) return false;
 		return m_CurrentStates[playerId].Gamepad.wButtons & static_cast<unsigned int>(button); 
 	};
-	bool IsPressed(const ControllerButton& button, unsigned int playerId) const 
+	bool IsPressedThisFrame(const ControllerButton& button, unsigned int playerId) const 
 	{ 
 		if (playerId >= XUSER_MAX_COUNT) return false;
 		if (!m_ActiveControllers[playerId]) return false;
 		return m_ButtonsPressedThisFrame[playerId] & static_cast<unsigned int>(button);
 	};
-	bool IsReleased(const ControllerButton& button, unsigned int playerId) const 
+	bool IsReleasedThisFrame(const ControllerButton& button, unsigned int playerId) const 
 	{ 
 		if (playerId >= XUSER_MAX_COUNT) return false;
 		if (!m_ActiveControllers[playerId]) return false;
@@ -135,10 +135,10 @@ void pep::ControllerManager::AddCommand(const ControllerButton& button, const Bu
 	case pep::ButtonState::Down:
 		m_DownCommands[playerId].emplace(std::make_pair(button, std::move(command)));
 		break;
-	case pep::ButtonState::Pressed:
+	case pep::ButtonState::PressedThisFrame:
 		m_PressedCommands[playerId].emplace(std::make_pair(button, std::move(command)));
 		break;
-	case pep::ButtonState::Released:
+	case pep::ButtonState::ReleasedThisFrame:
 		m_ReleasedCommands[playerId].emplace(std::make_pair(button, std::move(command)));
 		break;
 	}
@@ -151,10 +151,10 @@ void pep::ControllerManager::RemoveCommand(const ControllerButton& button, const
 	case pep::ButtonState::Down:
 		m_DownCommands[playerId].erase(button);
 		break;
-	case pep::ButtonState::Pressed:
+	case pep::ButtonState::PressedThisFrame:
 		m_PressedCommands[playerId].erase(button);
 		break;
-	case pep::ButtonState::Released:
+	case pep::ButtonState::ReleasedThisFrame:
 		m_ReleasedCommands[playerId].erase(button);
 		break;
 	}
@@ -166,11 +166,11 @@ bool pep::ControllerManager::IsButtonActive(const ControllerButton& button, cons
 	case pep::ButtonState::Down:
 		return m_pImpl->IsDown(button, playerId);
 		break;
-	case pep::ButtonState::Pressed:
-		return m_pImpl->IsPressed(button, playerId);
+	case pep::ButtonState::PressedThisFrame:
+		return m_pImpl->IsPressedThisFrame(button, playerId);
 		break;
-	case pep::ButtonState::Released:
-		return m_pImpl->IsReleased(button, playerId);
+	case pep::ButtonState::ReleasedThisFrame:
+		return m_pImpl->IsReleasedThisFrame(button, playerId);
 		break;
 	default:
 		return false;

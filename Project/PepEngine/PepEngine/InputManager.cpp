@@ -25,3 +25,13 @@ bool pep::InputManager::IsControllerButtonActive(const ControllerButton& button,
 {
 	return m_pControllerManager->IsButtonActive(button, state, playerId);
 }
+
+void pep::InputManager::AddControllerCommand(const ControllerButton& button, const ButtonState& state, std::shared_ptr<BaseCommand> command, unsigned int playerId)
+{
+	m_pControllerManager->AddCommand(button, state, command, playerId);
+}
+
+void pep::InputManager::RemoveControllerCommand(const ControllerButton& button, const ButtonState& state, unsigned int playerId)
+{
+	m_pControllerManager->RemoveCommand(button, state, playerId);
+}
