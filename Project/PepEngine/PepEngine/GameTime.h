@@ -3,7 +3,7 @@
 
 namespace pep
 {
-	class Time final : public Singleton<Time>
+	class GameTime final : public Singleton<GameTime>
 	{
 	public:
 		float GetDeltaTime() const;
@@ -11,8 +11,8 @@ namespace pep
 		float GetStartTime() const;
 		void SetStartTime(float startTime);
 	private:
-		friend class Singleton<Time>;
-		Time() = default;
+		friend class Singleton<GameTime>;
+		GameTime() = default;
 		float m_DeltaTime;
 		float m_StartTime;
 	};

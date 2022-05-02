@@ -6,7 +6,7 @@
 #include <XInput.h>
 #pragma comment(lib, "xinput.lib")
 
-#include "Time.h"
+#include "GameTime.h"
 
 using namespace pep;
 
@@ -38,7 +38,7 @@ public:
 
 	void Update()
 	{
-		m_activityCheckTimeAcc -= Time::GetInstance().GetDeltaTime();
+		m_activityCheckTimeAcc -= GameTime::GetInstance().GetDeltaTime();
 
 		for (size_t i = 0; i < XUSER_MAX_COUNT; ++i)
 		{

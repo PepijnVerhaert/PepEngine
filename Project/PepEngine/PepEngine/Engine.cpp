@@ -3,7 +3,7 @@
 
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "Time.h"
+#include "GameTime.h"
 #include "SceneManager.h"
 #include "InputManager.h"
 
@@ -79,7 +79,7 @@ void pep::Engine::Run(const std::function<void()>& loadGame)
 		while (!quit)
 		{
 			auto currentTime = std::chrono::high_resolution_clock::now();
-			Time::GetInstance().SetDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
+			GameTime::GetInstance().SetDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
 
 			input.Update();
 			quit = input.QuitGame();

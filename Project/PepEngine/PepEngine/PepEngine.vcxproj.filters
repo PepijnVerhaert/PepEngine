@@ -87,7 +87,7 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
+    <ClCompile Include="GameTime.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
     <ClCompile Include="BaseCommand.cpp">
@@ -167,7 +167,7 @@
     <ClInclude Include="Singleton.h">
       <Filter>Singletons</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="GameTime.h">
       <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="BaseCommand.h">
