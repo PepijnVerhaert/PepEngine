@@ -28,6 +28,9 @@
     <Filter Include="Helpers">
       <UniqueIdentifier>{a71295be-a3c4-4cb7-a673-bf89e08c2874}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Services">
+      <UniqueIdentifier>{77153716-5a60-45cd-87ca-918244dc9de1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -95,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="ControllerManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingSoundService.cpp">
+      <Filter>Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +187,18 @@
     </ClInclude>
     <ClInclude Include="ControllerManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSoundService.h">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="NullSoundService.h">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingSoundService.h">
+      <Filter>Services</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

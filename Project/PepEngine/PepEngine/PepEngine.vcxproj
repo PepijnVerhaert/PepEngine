@@ -266,6 +266,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) 
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="LoggingSoundService.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PepEnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -277,6 +278,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) 
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform2D.cpp" />
@@ -293,17 +295,21 @@ xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll $(OutputPath) 
     <ClInclude Include="..\3rdParty\imgui-1.87\imstb_truetype.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BaseSoundService.h" />
     <ClInclude Include="ControllerManager.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="InputHelper.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LoggingSoundService.h" />
+    <ClInclude Include="NullSoundService.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PepEnginePCH.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Texture2D.h" />
