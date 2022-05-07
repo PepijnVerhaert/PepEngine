@@ -15,13 +15,13 @@ namespace pep
 		LoggingSoundService& operator=(const LoggingSoundService& other) = delete;
 		LoggingSoundService& operator=(LoggingSoundService&& other) = delete;
 
-		int Play(const size_t id, const float volume) override;
-		void Pause(const size_t id, const int channel) override;
-		void Stop(const size_t id, const int channel) override;
+		int Play(const int id, const int volume) override;
+		void Pause(const int id, const int channel) override;
+		void Stop(const int id, const int channel) override;
+		void ProcessSound() override;
+		int Load(const std::string& file) override;
 
 	private:
-		void Load(const size_t id) override;
-
 		BaseSoundService* m_pActualSoundService;
 	};
 }

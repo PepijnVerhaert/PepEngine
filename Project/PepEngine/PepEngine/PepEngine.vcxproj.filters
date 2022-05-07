@@ -31,6 +31,9 @@
     <Filter Include="Services">
       <UniqueIdentifier>{77153716-5a60-45cd-87ca-918244dc9de1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Services\Sound">
+      <UniqueIdentifier>{26f5c845-e532-419c-a557-76ceb540f376}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -103,7 +106,10 @@
       <Filter>Services</Filter>
     </ClCompile>
     <ClCompile Include="LoggingSoundService.cpp">
-      <Filter>Services</Filter>
+      <Filter>Services\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLSoundService.cpp">
+      <Filter>Services\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,14 +197,17 @@
     <ClInclude Include="ServiceLocator.h">
       <Filter>Services</Filter>
     </ClInclude>
-    <ClInclude Include="BaseSoundService.h">
-      <Filter>Services</Filter>
-    </ClInclude>
     <ClInclude Include="NullSoundService.h">
-      <Filter>Services</Filter>
+      <Filter>Services\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSoundService.h">
+      <Filter>Services\Sound</Filter>
     </ClInclude>
     <ClInclude Include="LoggingSoundService.h">
-      <Filter>Services</Filter>
+      <Filter>Services\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLSoundService.h">
+      <Filter>Services\Sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

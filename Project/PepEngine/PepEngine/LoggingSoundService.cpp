@@ -11,23 +11,35 @@ LoggingSoundService::LoggingSoundService(BaseSoundService* pActualSoundService)
 	std::cout << "Logging sound system of type: " << typeid(*m_pActualSoundService).name() << ".\n";
 }
 
-int LoggingSoundService::Play(const size_t id, const float volume)
+int LoggingSoundService::Play(const int id, const int volume)
 {
 	std::cout << "Playing " << id << " at volume " << volume << ".\n";
 	return m_pActualSoundService->Play(id, volume);
 }
 
-void LoggingSoundService::Pause(const size_t id, const int channel)
+void LoggingSoundService::Pause(const int id, const int channel)
 {
 	std::cout << "Pausing " << id << " on channel " << channel << ".\n";
 	m_pActualSoundService->Pause(id, channel);
 }
 
-void LoggingSoundService::Stop(const size_t id, const int channel)
+void LoggingSoundService::Stop(const int id, const int channel)
 {
 	std::cout << "Stopping " << id << " on channel " << channel << ".\n";
 	m_pActualSoundService->Stop(id, channel);
 }
 
-void LoggingSoundService::Load(const size_t)
-{}
+void pep::LoggingSoundService::ProcessSound()
+{
+	m_pActualSoundService->ProcessSound();
+}
+
+int LoggingSoundService::Load(const std::string& file)
+{
+	int id = m_pActualSoundService->Load(file);
+	if(id != -1)
+		std::cout << "Loaded \"" << file << "\" to id " << id << ".\n";
+	else
+		std::cout << "Failed to load \"" << file << "\" id returned " << id << ".\n";
+	return id;
+}

@@ -14,11 +14,9 @@ namespace pep
 		NullSoundService& operator=(const NullSoundService& other) = delete;
 		NullSoundService& operator=(NullSoundService&& other) = delete;
 
-		int Play(const size_t id, const float volume) override {};
-		void Pause(const size_t id, const int channel) override {};
-		void Stop(const size_t id, const int channel) override {};
-
-	private:
-		void Load(const size_t id) override {};
+		int Play(const int id, const int volume) override {};
+		void Pause(const int id, const int channel) override {};
+		void Stop(const int id, const int channel) override {};
+		int Load(const std::string& file) override { return -1; };
 	};
 }

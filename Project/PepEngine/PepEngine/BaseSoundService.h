@@ -12,11 +12,10 @@ namespace pep
 		BaseSoundService& operator=(const BaseSoundService& other) = delete;
 		BaseSoundService& operator=(BaseSoundService&& other) = delete;
 
-		virtual int Play(const size_t id, const float volume) = 0;
-		virtual void Pause(const size_t id, const int channel) = 0;
-		virtual void Stop(const size_t id, const int channel) = 0;
-
-	protected:
-		virtual void Load(const size_t id) = 0;
+		virtual int Play(const int id, const int volume) = 0;
+		virtual void Pause(const int id, const int channel) = 0;
+		virtual void Stop(const int id, const int channel) = 0;
+		virtual void ProcessSound() = 0;
+		virtual int Load(const std::string& file) = 0;
 	};
 }
