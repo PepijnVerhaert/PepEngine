@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+using namespace pep;
+
 LoggingSoundService::LoggingSoundService(BaseSoundService* pActualSoundService)
 	:m_pActualSoundService(pActualSoundService)
 {

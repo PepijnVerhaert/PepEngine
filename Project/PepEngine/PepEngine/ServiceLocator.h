@@ -1,14 +1,16 @@
 #pragma once
-class ServiceLocator final
+#include "NullSoundService.h"
+
+namespace pep
 {
-public:
-	ServiceLocator() = default;
-	~ServiceLocator() = default;
-
-	template <typename T>
-	T* GetService()
+	class BaseSoundService;
+	class ServiceLocator final
 	{
-		return nullptr;
-	}
-};
-
+	public:
+		static BaseSoundService* GetSoundService();
+		static void SetSoundService(BaseSoundService* pSoundService);
+	private:
+		static BaseSoundService* m_pSoundService;
+		static NullSoundService m_NullSoundService;
+	};
+}
