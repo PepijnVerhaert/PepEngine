@@ -34,6 +34,9 @@
     <Filter Include="Services\Sound">
       <UniqueIdentifier>{26f5c845-e532-419c-a557-76ceb540f376}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EventArgs">
+      <UniqueIdentifier>{1cc2e2e0-c46a-4469-84d9-a402f3b3f59c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -208,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="SDLSoundService.h">
       <Filter>Services\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="EventArgs.h">
+      <Filter>EventArgs</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLSoundServiceEventArgs.h">
+      <Filter>EventArgs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,35 +11,61 @@ LoggingSoundService::LoggingSoundService(BaseSoundService* pActualSoundService)
 	std::cout << "Logging sound system of type: " << typeid(*m_pActualSoundService).name() << ".\n";
 }
 
-int LoggingSoundService::Play(const int id, const int volume)
+void pep::LoggingSoundService::SetFilePath(const std::string& path)
 {
-	std::cout << "Playing " << id << " at volume " << volume << ".\n";
-	return m_pActualSoundService->Play(id, volume);
+	std::cout << "Set file path to \"" << path << "\".\n";
+	m_pActualSoundService->SetFilePath(path);
 }
 
-void LoggingSoundService::Pause(const int id, const int channel)
+void pep::LoggingSoundService::PlayEffect(const std::string& file, const int volume)
 {
-	std::cout << "Pausing " << id << " on channel " << channel << ".\n";
-	m_pActualSoundService->Pause(id, channel);
+	std::cout << "Playing effect \"" << file << "\" at volume " << volume << ".\n";
+	m_pActualSoundService->PlayEffect(file, volume);
 }
 
-void LoggingSoundService::Stop(const int id, const int channel)
+void pep::LoggingSoundService::PauseEffects()
 {
-	std::cout << "Stopping " << id << " on channel " << channel << ".\n";
-	m_pActualSoundService->Stop(id, channel);
+	std::cout << "Pausing all sound effects.\n";
+	m_pActualSoundService->PauseEffects();
+}
+
+void pep::LoggingSoundService::ResumeEffects()
+{
+	std::cout << "Resuming all sound effects.\n";
+	m_pActualSoundService->ResumeEffects();
+}
+
+void pep::LoggingSoundService::StopEffects()
+{
+	std::cout << "Stopping all sound effects.\n";
+	m_pActualSoundService->StopEffects();
+}
+
+void pep::LoggingSoundService::PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec)
+{
+	std::cout << "Playing music \"" << file << "\" at volume " << volume << ", with a fade-in time of " << fadeInSec << " seconds and loop set to " << loop << ".\n";
+	m_pActualSoundService->PlayMusic(file, loop, volume, fadeInSec);
+}
+
+void pep::LoggingSoundService::PauseMusic()
+{
+	std::cout << "Pausing music.\n";
+	m_pActualSoundService->PauseMusic();
+}
+
+void pep::LoggingSoundService::ResumeMusic()
+{
+	std::cout << "Resuming music.\n";
+	m_pActualSoundService->ResumeMusic();
+}
+
+void pep::LoggingSoundService::StopMusic(float fadeOutSec)
+{
+	std::cout << "Stopping music with a fade-out time of " << fadeOutSec << " seconds.\n";
+	m_pActualSoundService->StopMusic(fadeOutSec);
 }
 
 void pep::LoggingSoundService::ProcessSound()
 {
 	m_pActualSoundService->ProcessSound();
-}
-
-int LoggingSoundService::Load(const std::string& file)
-{
-	int id = m_pActualSoundService->Load(file);
-	if(id != -1)
-		std::cout << "Loaded \"" << file << "\" to id " << id << ".\n";
-	else
-		std::cout << "Failed to load \"" << file << "\" id returned " << id << ".\n";
-	return id;
 }

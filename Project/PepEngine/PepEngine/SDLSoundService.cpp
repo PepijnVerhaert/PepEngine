@@ -1,60 +1,230 @@
 #include "PepEnginePCH.h"
 #include "SDLSoundService.h"
 
+#include "SDLSoundServiceEventArgs.h"
+
+#include <queue>
+#include <map>
+#include <SDL_mixer.h>
+#include <thread>
+#include <mutex>
+
 using namespace pep;
 
-pep::SDLSoundService::SDLSoundService()
+//SDL IMPLEMENTATION
+class pep::SDLSoundService::SDLSoundServiceImpl
 {
+public:
+	enum class SDLSoundQueueEvent
+	{
+		PlayEffect,
+		PauseEffect,
+		ResumeEffect,
+		StopEffect,
+		LoadEffect,
+		PlayMusic,
+		PauseMusic,
+		ResumeMusic,
+		StopMusic,
+		LoadMusic
+	};
+
+	SDLSoundServiceImpl()
+		:m_pEffects{}
+		,m_pMusic{}
+		,m_Path{""}
+		,m_EventQueue{}
+		,m_Mutex{}
+	{
+	}
+
+	~SDLSoundServiceImpl()
+	{
+
+		Mix_CloseAudio();
+	}
+
+	void ProcessSound() 
+	{
+
+	}
+
+	void Initialize() 
+	{
+		Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+
+	}
+
+	void SetFilePath(const std::string& path) 
+	{
+		m_Path = path;
+	}
+
+private:
+
+	void PlayEffect(const std::string& file, const int volume)
+	{
+		auto fullPath = m_Path + file;
+		if (m_pEffects.find(fullPath) == m_pEffects.end())
+		{
+			//file hasn't been loaded
+			LoadEffect(file);
+		}
+
+		if (m_pEffects.find(fullPath) != m_pEffects.end())
+		{
+			int channel = Mix_PlayChannel(-1, m_pEffects.at(fullPath), 0);
+			if (channel != -1)
+			{
+				int newVolume = int((float(volume) / 100.f) * float(MIX_MAX_VOLUME));
+				if (newVolume < 0) newVolume = 0;
+				Mix_Volume(channel, newVolume);
+			}
+		}
+	}
+	void PauseEffects()
+	{
+		Mix_Pause(-1);
+	}
+	void ResumeEffects()
+	{
+		Mix_Resume(-1);
+	}
+	void StopEffects()
+	{
+		Mix_HaltChannel(-1);
+	}
+
+	void PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec = 0.f)
+	{
+		auto fullPath = m_Path + file;
+		if (m_pMusic.find(fullPath) == m_pMusic.end())
+		{
+			//file hasn't been loaded
+			LoadMusic(file);
+		}
+
+		if (m_pMusic.find(fullPath) != m_pMusic.end())
+		{
+			int newVolume = int((float(volume) / 100.f) * float(MIX_MAX_VOLUME));
+			if (newVolume < 0) newVolume = 0;
+			Mix_VolumeMusic(newVolume);
+
+			int newLoop = loop == true ? -1 : 0;
+
+			int fadeInMs = int(fadeInSec * 1000.f);
+
+			int channel = Mix_FadeInMusic(m_pMusic.at(fullPath), newLoop, fadeInMs);
+		}
+	}
+	void PauseMusic()
+	{
+		Mix_PauseMusic();
+	}
+	void ResumeMusic()
+	{
+		Mix_ResumeMusic();
+	}
+	void StopMusic(float fadeOutSec = 0.f) 
+	{
+		int fadeOutMs = int(fadeOutSec * 1000.f);
+		Mix_FadeOutMusic(fadeOutMs);
+	}
+
+	void LoadEffect(const std::string& file)
+	{
+		auto fullPath = m_Path + file;
+		if (m_pEffects.find(fullPath) == m_pEffects.end())
+		{
+			//file hasn't been loaded
+			auto newEffect = Mix_LoadWAV(fullPath.c_str());
+			if (newEffect)
+			{
+				//effect was loaded correctly
+				m_pEffects.insert(std::make_pair(fullPath, newEffect));
+			}
+		}
+	}
+	void LoadMusic(const std::string& file)
+	{
+		auto fullPath = m_Path + file;
+		if (m_pMusic.find(fullPath) == m_pMusic.end())
+		{
+			//file hasn't been loaded
+			auto newMusic = Mix_LoadMUS(fullPath.c_str());
+			if (newMusic)
+			{
+				//music was loaded correctly
+				m_pMusic.insert(std::make_pair(fullPath, newMusic));
+			}
+		}
+	}
+
+	std::map<std::string, Mix_Chunk*> m_pEffects;
+	std::map<std::string, Mix_Music*> m_pMusic;
+
+	std::queue<std::pair<SDLSoundQueueEvent, const EventArgs>> m_EventQueue;
+	std::mutex m_Mutex;
+
+	std::string m_Path;
+
+};
+
+
+pep::SDLSoundService::SDLSoundService()
+	:m_pImpl{nullptr}
+{
+	m_pImpl = new SDLSoundServiceImpl;
 }
 
 pep::SDLSoundService::~SDLSoundService()
 {
-	auto wave = Mix_LoadWAV("");
-	Mix_CloseAudio();
+	delete m_pImpl;
 }
 
-int pep::SDLSoundService::Play(const int id, const int volume)
+void pep::SDLSoundService::SetFilePath(const std::string& path)
 {
-	return 0;
+	m_pImpl->SetFilePath(path);
 }
 
-void pep::SDLSoundService::Pause(const int id, const int channel)
+void pep::SDLSoundService::PlayEffect(const std::string& file, const int volume)
 {
 }
 
-void pep::SDLSoundService::Stop(const int id, const int channel)
+void pep::SDLSoundService::PauseEffects()
+{
+}
+
+void pep::SDLSoundService::ResumeEffects()
+{
+}
+
+void pep::SDLSoundService::StopEffects()
+{
+}
+
+void pep::SDLSoundService::PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec)
+{
+}
+
+void pep::SDLSoundService::PauseMusic()
+{
+}
+
+void pep::SDLSoundService::ResumeMusic()
+{
+}
+
+void pep::SDLSoundService::StopMusic(float fadeOutSec)
 {
 }
 
 void pep::SDLSoundService::ProcessSound()
 {
-}
-
-int pep::SDLSoundService::Load(const std::string& file)
-{
-	if (m_LoadedEffects.find(file) == m_LoadedEffects.end())
-	{
-		//file is a new sound effect
-		auto effect = Mix_LoadWAV(file.c_str());
-		if (effect)
-		{
-			//effect was loaded correctly
-			m_Effects.push_back(effect);
-			m_LoadedEffects.insert(std::make_pair(file, m_Effects.size()-1));
-			return int(m_Effects.size() - 1);
-		}
-	}
-	else
-	{
-		//file has already been loaded
-		return int(m_LoadedEffects.at(file));
-	}
-	//something went wrong
-	return -1;
+	m_pImpl->ProcessSound();
 }
 
 void pep::SDLSoundService::Initialize()
 {
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
-
+	m_pImpl->Initialize();
 }

@@ -14,9 +14,18 @@ namespace pep
 		NullSoundService& operator=(const NullSoundService& other) = delete;
 		NullSoundService& operator=(NullSoundService&& other) = delete;
 
-		int Play(const int id, const int volume) override {};
-		void Pause(const int id, const int channel) override {};
-		void Stop(const int id, const int channel) override {};
-		int Load(const std::string& file) override { return -1; };
+		void SetFilePath(const std::string& path) override {};
+
+		void PlayEffect(const std::string& file, const int volume) override {};
+		void PauseEffects() override {};
+		void ResumeEffects() override {};
+		void StopEffects() override {};
+
+		void PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec = 0.f) override {};
+		void PauseMusic() override {};
+		void ResumeMusic() override {};
+		void StopMusic(float fadeOutSec = 0.f) override {};
+
+		void ProcessSound() override {};
 	};
 }

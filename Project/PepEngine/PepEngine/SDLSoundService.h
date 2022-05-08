@@ -1,10 +1,6 @@
 #pragma once
 #include "BaseSoundService.h"
 
-#include <queue>
-#include <map>
-#include <SDL_mixer.h>
-
 namespace pep
 {
 
@@ -18,18 +14,23 @@ namespace pep
 		SDLSoundService& operator=(const SDLSoundService& other) = delete;
 		SDLSoundService& operator=(SDLSoundService&& other) = delete;
 
-		int Play(const int id, const int volume) override;
-		void Pause(const int id, const int channel) override;
-		void Stop(const int id, const int channel) override;
+		void SetFilePath(const std::string& path) override;
+
+		void PlayEffect(const std::string& file, const int volume) override;
+		void PauseEffects() override;
+		void ResumeEffects() override;
+		void StopEffects() override;
+
+		void PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec = 0.f) override;
+		void PauseMusic() override;
+		void ResumeMusic() override;
+		void StopMusic(float fadeOutSec = 0.f) override;
+
 		void ProcessSound() override;
-		int Load(const std::string& file) override;
 
 		void Initialize();
 	private:
-		std::vector<Mix_Chunk*> m_Effects;
-		std::map<std::string, size_t> m_LoadedEffects;
-
-
-
+		class SDLSoundServiceImpl;
+		SDLSoundServiceImpl* m_pImpl;
 	};
 }
