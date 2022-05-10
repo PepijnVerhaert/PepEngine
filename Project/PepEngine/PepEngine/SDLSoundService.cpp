@@ -21,12 +21,10 @@ public:
 		PauseEffect,
 		ResumeEffect,
 		StopEffect,
-		LoadEffect,
 		PlayMusic,
 		PauseMusic,
 		ResumeMusic,
-		StopMusic,
-		LoadMusic
+		StopMusic
 	};
 
 	SDLSoundServiceImpl()
@@ -35,6 +33,7 @@ public:
 		,m_Path{""}
 		,m_EventQueue{}
 		,m_Mutex{}
+		,m_QuitProcessing{false}
 	{
 	}
 
@@ -44,9 +43,23 @@ public:
 		Mix_CloseAudio();
 	}
 
-	void ProcessSound() 
+	void AddToQueue(SDLSoundQueueEvent event, const EventArgs& args)
 	{
+		auto lock = std::scoped_lock(m_Mutex);
+		m_EventQueue.push(std::make_pair(event, args));
+	}
 
+	void ProcessSound()
+	{
+		while (!m_QuitProcessing)
+		{
+			auto lock = std::scoped_lock(m_Mutex);
+			if (m_EventQueue.size() > 0)
+			{
+				auto currentQueue = m_EventQueue;
+			}
+
+		}
 	}
 
 	void Initialize() 
@@ -168,6 +181,7 @@ private:
 
 	std::string m_Path;
 
+	bool m_QuitProcessing;
 };
 
 
@@ -189,34 +203,50 @@ void pep::SDLSoundService::SetFilePath(const std::string& path)
 
 void pep::SDLSoundService::PlayEffect(const std::string& file, const int volume)
 {
+	PlayEffectEventArgs e{ file, volume };
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PlayEffect, e);
 }
 
 void pep::SDLSoundService::PauseEffects()
 {
+	EventArgs e{};
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PauseEffect, e);
 }
 
 void pep::SDLSoundService::ResumeEffects()
 {
+	EventArgs e{};
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeEffect, e);
 }
 
 void pep::SDLSoundService::StopEffects()
 {
+	EventArgs e{};
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::StopEffect, e);
 }
 
 void pep::SDLSoundService::PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec)
 {
+	PlayMusicEventArgs e{ file, loop, volume, fadeInSec };
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PlayMusic, e);
 }
 
 void pep::SDLSoundService::PauseMusic()
 {
+	EventArgs e{};
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PauseMusic, e);
 }
 
 void pep::SDLSoundService::ResumeMusic()
 {
+	EventArgs e{};
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeMusic, e);
 }
 
 void pep::SDLSoundService::StopMusic(float fadeOutSec)
 {
+	StopMusicEventArgs e{ fadeOutSec };
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::StopMusic, e);
 }
 
 void pep::SDLSoundService::ProcessSound()
