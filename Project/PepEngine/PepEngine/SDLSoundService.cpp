@@ -8,6 +8,8 @@
 #include <SDL_mixer.h>
 #include <thread>
 #include <mutex>
+#include <memory>
+#include <condition_variable>
 
 using namespace pep;
 
@@ -32,40 +34,41 @@ public:
 		,m_pMusic{}
 		,m_Path{""}
 		,m_EventQueue{}
+		,m_WorkQueue{}
 		,m_Mutex{}
-		,m_QuitProcessing{false}
+		,m_ConVar{}
+		,m_DoEmptySoundQueue{false}
+		,m_DoProcessing{true}
+		,m_QueueThread{}
 	{
 	}
 
 	~SDLSoundServiceImpl()
 	{
-
+		m_DoProcessing = false;
+		ProcessSound();
 		Mix_CloseAudio();
 	}
 
-	void AddToQueue(SDLSoundQueueEvent event, const EventArgs& args)
+	void AddToQueue(SDLSoundQueueEvent event, std::shared_ptr<EventArgs> pArgs)
 	{
 		auto lock = std::scoped_lock(m_Mutex);
-		m_EventQueue.push(std::make_pair(event, args));
+		m_EventQueue.push(std::make_pair(event, pArgs));
 	}
 
 	void ProcessSound()
 	{
-		while (!m_QuitProcessing)
 		{
 			auto lock = std::scoped_lock(m_Mutex);
-			if (m_EventQueue.size() > 0)
-			{
-				auto currentQueue = m_EventQueue;
-			}
-
+			m_DoEmptySoundQueue = true;
 		}
+		m_ConVar.notify_all();
 	}
 
-	void Initialize() 
+	void Initialize()
 	{
 		Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
-
+		m_QueueThread = std::jthread{ &ProcessQueue };
 	}
 
 	void SetFilePath(const std::string& path) 
@@ -173,15 +176,88 @@ private:
 		}
 	}
 
+	void ProcessEvent(const std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>> queueEvent)
+	{
+		switch (queueEvent.first)
+		{
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::PlayEffect:
+		{
+			auto args = std::dynamic_pointer_cast<PlayEffectEventArgs>(queueEvent.second);
+			PlayEffect(args->GetFile(), args->GetVolume());
+			break;
+		}
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::PauseEffect:
+			PauseEffects();
+			break;
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeEffect:
+			ResumeEffects();
+			break;
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::StopEffect:
+			StopEffects();
+			break;
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::PlayMusic:
+		{
+			auto args = std::dynamic_pointer_cast<PlayMusicEventArgs>(queueEvent.second);
+			PlayMusic(args->GetFile(), args->GetLoop(), args->GetVolume(), args->GetFadeInSec());
+			break;
+		}
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::PauseMusic:
+			PauseMusic();
+			break;
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeMusic:
+			ResumeMusic();
+			break;
+		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::StopMusic:
+		{
+			auto args = std::dynamic_pointer_cast<StopMusicEventArgs>(queueEvent.second);
+			StopMusic(args->GetFadeOutSec());
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	void ProcessQueue()
+	{
+		while (m_DoProcessing)
+		{
+			while (m_WorkQueue.size() > 0)
+			{
+				//process first event and pop it
+				ProcessEvent(m_WorkQueue.front());
+				m_WorkQueue.pop();
+			}
+
+			auto lock = std::unique_lock(m_Mutex);
+			//wait for the main thread to tell something is on the queue
+			m_ConVar.wait(lock, [this] {return m_DoEmptySoundQueue; });
+			while (m_EventQueue.size() > 0)
+			{
+				//move events from event queue to work queue
+				m_WorkQueue.push(m_EventQueue.front());
+				m_EventQueue.pop();
+			}
+			m_DoEmptySoundQueue = false;
+			lock.unlock();
+		}
+	}
+
 	std::map<std::string, Mix_Chunk*> m_pEffects;
 	std::map<std::string, Mix_Music*> m_pMusic;
 
-	std::queue<std::pair<SDLSoundQueueEvent, const EventArgs>> m_EventQueue;
+	std::queue<std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>>> m_EventQueue;
+	std::queue<std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>>> m_WorkQueue;
+
 	std::mutex m_Mutex;
+	std::jthread m_QueueThread;
+
+	std::condition_variable m_ConVar;
+	bool m_DoEmptySoundQueue;
 
 	std::string m_Path;
 
-	bool m_QuitProcessing;
+	bool m_DoProcessing;
 };
 
 
@@ -203,49 +279,44 @@ void pep::SDLSoundService::SetFilePath(const std::string& path)
 
 void pep::SDLSoundService::PlayEffect(const std::string& file, const int volume)
 {
-	PlayEffectEventArgs e{ file, volume };
+	auto e = std::make_shared <PlayEffectEventArgs>( file, volume );
 	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PlayEffect, e);
 }
 
 void pep::SDLSoundService::PauseEffects()
 {
-	EventArgs e{};
-	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PauseEffect, e);
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PauseEffect, nullptr);
 }
 
 void pep::SDLSoundService::ResumeEffects()
 {
-	EventArgs e{};
-	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeEffect, e);
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeEffect, nullptr);
 }
 
 void pep::SDLSoundService::StopEffects()
 {
-	EventArgs e{};
-	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::StopEffect, e);
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::StopEffect, nullptr);
 }
 
 void pep::SDLSoundService::PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec)
 {
-	PlayMusicEventArgs e{ file, loop, volume, fadeInSec };
+	auto e = std::make_shared <PlayMusicEventArgs>(file, loop, volume, fadeInSec);
 	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PlayMusic, e);
 }
 
 void pep::SDLSoundService::PauseMusic()
 {
-	EventArgs e{};
-	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PauseMusic, e);
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PauseMusic, nullptr);
 }
 
 void pep::SDLSoundService::ResumeMusic()
 {
-	EventArgs e{};
-	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeMusic, e);
+	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::ResumeMusic, nullptr);
 }
 
 void pep::SDLSoundService::StopMusic(float fadeOutSec)
 {
-	StopMusicEventArgs e{ fadeOutSec };
+	auto e = std::make_shared<StopMusicEventArgs>(fadeOutSec);
 	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::StopMusic, e);
 }
 
