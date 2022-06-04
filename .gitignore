@@ -17,19 +17,19 @@
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+Project/PepEngine/Build/*.so
+Project/PepEngine/Build/*.dylib
+Project/PepEngine/Build/*.dll
 
 # Fortran module files
 *.mod
 *.smod
 
 # Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+Project/PepEngine/Build/*.lai
+Project/PepEngine/Build/*.la
+Project/PepEngine/Build/*.a
+Project/PepEngine/Build/*.lib
 
 # Executables
 *.exe
