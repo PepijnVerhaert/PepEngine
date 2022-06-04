@@ -184,7 +184,7 @@ private:
 		}
 	}
 
-	void ProcessEvent(const std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>> queueEvent)
+	void ProcessEvent(const std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>>& queueEvent)
 	{
 		switch (queueEvent.first)
 		{
