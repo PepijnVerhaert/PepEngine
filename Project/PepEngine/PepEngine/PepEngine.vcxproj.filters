@@ -37,9 +37,6 @@
     <Filter Include="EventArgs">
       <UniqueIdentifier>{1cc2e2e0-c46a-4469-84d9-a402f3b3f59c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Observer">
-      <UniqueIdentifier>{926ac762-b5bb-49ac-aa83-7af5b5e76ca1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -116,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="SDLSoundService.cpp">
       <Filter>Services\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="Subject.cpp">
-      <Filter>Observer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,18 +220,6 @@
     </ClInclude>
     <ClInclude Include="SoundInclude.h">
       <Filter>Services\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseObserverEvent.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="ObserverEvents.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Subject.h">
-      <Filter>Observer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

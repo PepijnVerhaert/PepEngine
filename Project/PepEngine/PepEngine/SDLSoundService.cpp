@@ -230,6 +230,7 @@ private:
 				ProcessEvent(m_WorkQueue.front());
 				m_WorkQueue.pop();
 			}
+
 			auto lock = std::unique_lock(m_Mutex);
 			//wait for the main thread to tell something is on the queue
 			m_ConVar.wait(lock, [this] {return m_DoEmptySoundQueue; });
@@ -301,7 +302,7 @@ void pep::SDLSoundService::StopEffects()
 
 void pep::SDLSoundService::PlayMusic(const std::string& file, bool loop, const int volume, float fadeInSec)
 {
-	auto e = std::make_shared<PlayMusicEventArgs>(file, loop, volume, fadeInSec);
+	auto e = std::make_shared <PlayMusicEventArgs>(file, loop, volume, fadeInSec);
 	m_pImpl->AddToQueue(SDLSoundServiceImpl::SDLSoundQueueEvent::PlayMusic, e);
 }
 
