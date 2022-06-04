@@ -9,7 +9,6 @@
 #include <thread>
 #include <mutex>
 #include <memory>
-#include <atomic>
 #include <condition_variable>
 
 using namespace pep;
@@ -38,7 +37,7 @@ public:
 		,m_WorkQueue{}
 		,m_Mutex{}
 		,m_ConVar{}
-		,m_Quit{false}
+		,m_DoProcessing{true}
 		,m_QueueThread{}
 	{
 		Initialize();
@@ -46,7 +45,7 @@ public:
 
 	~SDLSoundServiceImpl()
 	{
-		m_Quit = true;
+		m_DoProcessing = false;
 		ProcessSound();
 		Mix_CloseAudio();
 	}
@@ -218,7 +217,7 @@ private:
 
 	void ProcessQueue()
 	{
-		while (!m_Quit)
+		while (m_DoProcessing)
 		{
 			while (!m_WorkQueue.empty())
 			{
@@ -252,7 +251,7 @@ private:
 
 	std::string m_Path;
 
-	std::atomic_bool m_Quit;
+	bool m_DoProcessing;
 };
 
 
