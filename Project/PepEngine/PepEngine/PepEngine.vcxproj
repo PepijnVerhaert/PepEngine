@@ -305,6 +305,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseObserverEvent.h" />
     <ClInclude Include="BaseSoundService.h" />
+    <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="ControllerManager.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EventArgs.h" />

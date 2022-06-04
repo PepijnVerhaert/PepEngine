@@ -239,5 +239,8 @@
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
 #include "Object.h"
 #include "InputManager.h"
 #include "SoundInclude.h"
+#include "BinaryReader.h"
 
 //game includes
 #include "TestComponent.h"
@@ -23,7 +24,9 @@
 
 void LoadGame()
 {
-	pep::ServiceLocator::GetSoundService()->SetFilePath("../Data/");
+	pep::ServiceLocator::GetSoundService()->SetFilePath("../Data/Sound/");
+	std::vector<char> levelData{};
+	pep::BinaryToChar("../Data/level.pep", levelData);
 	pep::ServiceLocator::GetSoundService()->PlayMusic("Boenkus.mp3", true, 30);
 	auto& scene = pep::SceneManager::GetInstance().CreateScene("Test");
 	auto testObject = std::make_shared<pep::Object>();
