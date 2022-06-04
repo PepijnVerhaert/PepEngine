@@ -253,7 +253,6 @@ private:
 			m_EmptiedQueue = true;
 			lock.unlock();
 		} while (!m_Quit);
-		std::cout << "quit thread\n";
 	}
 
 	std::map<std::string, Mix_Chunk*> m_pEffects;
