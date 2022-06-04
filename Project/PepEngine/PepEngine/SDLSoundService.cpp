@@ -41,6 +41,7 @@ public:
 		,m_DoProcessing{true}
 		,m_QueueThread{}
 	{
+		Initialize();
 	}
 
 	~SDLSoundServiceImpl()
@@ -67,7 +68,7 @@ public:
 
 	void Initialize()
 	{
-		Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+		Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 4096);
 		m_QueueThread = std::jthread{ &SDLSoundService::SDLSoundServiceImpl::ProcessQueue, this };
 	}
 
@@ -167,7 +168,8 @@ private:
 		if (m_pMusic.find(fullPath) == m_pMusic.end())
 		{
 			//file hasn't been loaded
-			auto newMusic = Mix_LoadMUS(fullPath.c_str());
+			Mix_Music* newMusic = Mix_LoadMUS(fullPath.c_str());
+			assert(newMusic != NULL && L"failed to load music");
 			if (newMusic)
 			{
 				//music was loaded correctly

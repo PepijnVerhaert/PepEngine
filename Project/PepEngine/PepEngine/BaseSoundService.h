@@ -1,7 +1,6 @@
 #pragma once
 namespace pep
 {
-
 	class BaseSoundService
 	{
 	public:

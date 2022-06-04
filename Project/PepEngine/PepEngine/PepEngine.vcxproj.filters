@@ -218,5 +218,8 @@
     <ClInclude Include="SDLSoundServiceEventArgs.h">
       <Filter>EventArgs</Filter>
     </ClInclude>
+    <ClInclude Include="SoundInclude.h">
+      <Filter>Services\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

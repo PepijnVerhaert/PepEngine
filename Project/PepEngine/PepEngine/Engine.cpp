@@ -6,6 +6,9 @@
 #include "GameTime.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "ServiceLocator.h"
+#include "SDLSoundService.h"
+#include "LoggingSoundService.h"
 
 #include <thread>
 #include <memory>
@@ -48,10 +51,21 @@ void pep::Engine::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
+
+	//Service Locators
+	m_pSoundService = new SDLSoundService();
+	m_pLoggingSoundService = new LoggingSoundService(m_pSoundService);
+	ServiceLocator::SetSoundService(m_pLoggingSoundService);
+
+	// tell the resource manager where he can find the game data
+	ResourceManager::GetInstance().Init("../Data/");
 }
 
 void pep::Engine::Cleanup()
 {
+	delete m_pLoggingSoundService;
+	delete m_pSoundService;
+
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
@@ -61,9 +75,6 @@ void pep::Engine::Cleanup()
 void pep::Engine::Run(const std::function<void()>& loadGame)
 {
 	Initialize();
-
-	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
 
 	loadGame();
 
@@ -85,6 +96,7 @@ void pep::Engine::Run(const std::function<void()>& loadGame)
 			quit = input.QuitGame();
 
 			sceneManager.Update();
+			ServiceLocator::GetSoundService()->ProcessSound();
 			renderer.Render();
 
 			lastTime = currentTime;
@@ -93,7 +105,6 @@ void pep::Engine::Run(const std::function<void()>& loadGame)
 			std::this_thread::sleep_for(sleeptime);
 		}
 	}
-
 
 	Cleanup();
 }
