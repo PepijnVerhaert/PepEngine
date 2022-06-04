@@ -37,6 +37,7 @@ public:
 		,m_WorkQueue{}
 		,m_Mutex{}
 		,m_ConVar{}
+		,m_DoEmptySoundQueue{false}
 		,m_DoProcessing{true}
 		,m_QueueThread{}
 	{
@@ -58,6 +59,10 @@ public:
 
 	void ProcessSound()
 	{
+		{
+			auto lock = std::scoped_lock(m_Mutex);
+			m_DoEmptySoundQueue = true;
+		}
 		m_ConVar.notify_all();
 	}
 
@@ -219,7 +224,7 @@ private:
 	{
 		while (m_DoProcessing)
 		{
-			while (!m_WorkQueue.empty())
+			while (m_WorkQueue.size() > 0)
 			{
 				//process first event and pop it
 				ProcessEvent(m_WorkQueue.front());
@@ -227,13 +232,14 @@ private:
 			}
 			auto lock = std::unique_lock(m_Mutex);
 			//wait for the main thread to tell something is on the queue
-			m_ConVar.wait(lock, [this] {return !m_EventQueue.empty(); });
-			while (!m_EventQueue.empty())
+			m_ConVar.wait(lock, [this] {return m_DoEmptySoundQueue; });
+			while (m_EventQueue.size() > 0)
 			{
 				//move events from event queue to work queue
 				m_WorkQueue.push(m_EventQueue.front());
 				m_EventQueue.pop();
 			}
+			m_DoEmptySoundQueue = false;
 			lock.unlock();
 		}
 	}
@@ -248,6 +254,7 @@ private:
 	std::jthread m_QueueThread;
 
 	std::condition_variable m_ConVar;
+	bool m_DoEmptySoundQueue;
 
 	std::string m_Path;
 

@@ -4,5 +4,6 @@ namespace pep
 {
 	struct BaseObserverEvent
 	{
+
 	};
 }
