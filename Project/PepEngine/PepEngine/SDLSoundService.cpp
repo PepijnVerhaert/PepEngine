@@ -68,7 +68,7 @@ public:
 	void Initialize()
 	{
 		Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
-		m_QueueThread = std::jthread{ &ProcessQueue };
+		m_QueueThread = std::jthread{ &SDLSoundService::SDLSoundServiceImpl::ProcessQueue, this };
 	}
 
 	void SetFilePath(const std::string& path) 
@@ -130,7 +130,7 @@ private:
 
 			int fadeInMs = int(fadeInSec * 1000.f);
 
-			int channel = Mix_FadeInMusic(m_pMusic.at(fullPath), newLoop, fadeInMs);
+			/*int channel = */Mix_FadeInMusic(m_pMusic.at(fullPath), newLoop, fadeInMs);
 		}
 	}
 	void PauseMusic()
