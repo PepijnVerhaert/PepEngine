@@ -11,13 +11,6 @@ namespace pep
 	public:
 		Subject() = default;
 		virtual ~Subject() = default;
-
-		Subject(const Subject& other) = delete;
-		Subject(Subject&& other) = delete;
-		Subject& operator=(const Subject& other) = delete;
-		Subject& operator=(Subject&& other) = delete;
-
-
 		void AddObserver(const std::shared_ptr<Observer>& pObserver);
 		void RemoveObserver(const std::shared_ptr<Observer>& pObserver);
 	protected:
