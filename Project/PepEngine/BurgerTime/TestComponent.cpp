@@ -15,6 +15,6 @@ void TestComponent::Update()
 void TestComponent::Test()
 {
 	++m_TimesPressed;
-	pep::ServiceLocator::GetSoundService()->PlayEffect("Test.mp3", 100);
+	pep::ServiceLocator::GetSoundService()->PlayEffect("Yay.wav", 100);
 	std::cout << "test function in TestComponent called " << m_TimesPressed << " times\n";
 }

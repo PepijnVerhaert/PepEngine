@@ -39,6 +39,7 @@ public:
 		,m_Mutex{}
 		,m_ConVar{}
 		,m_Quit{false}
+		,m_EmptiedQueue{true}
 		,m_QueueThread{}
 	{
 		Initialize();
@@ -69,6 +70,10 @@ public:
 
 	void ProcessSound()
 	{
+		{
+			std::scoped_lock lock{ m_Mutex };
+			m_EmptiedQueue = false;
+		}
 		m_ConVar.notify_all();
 	}
 
@@ -238,13 +243,14 @@ private:
 			}
 			auto lock = std::unique_lock(m_Mutex);
 			//wait for the main thread to tell something is on the queue
-			m_ConVar.wait(lock, [this] {return !m_EventQueue.empty(); });
+			m_ConVar.wait(lock, [this] {return !m_EmptiedQueue; });
 			while (!m_EventQueue.empty())
 			{
 				//move events from event queue to work queue
 				m_WorkQueue.push(m_EventQueue.front());
 				m_EventQueue.pop();
 			}
+			m_EmptiedQueue = true;
 			lock.unlock();
 		} while (!m_Quit);
 		std::cout << "quit thread\n";
@@ -258,12 +264,12 @@ private:
 
 	std::mutex m_Mutex;
 	std::jthread m_QueueThread;
-
+	bool m_EmptiedQueue;
 	std::condition_variable m_ConVar;
 
 	std::string m_Path;
 
-	/*std::atomic_*/bool m_Quit;
+	std::atomic_bool m_Quit;
 };
 
 
