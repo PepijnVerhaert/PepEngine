@@ -22,7 +22,7 @@ namespace pep
 			input.read(&c, sizeof(char));
 			dest.emplace_back(c);
 		}
-		dest.erase(dest.end());
+		dest.erase(--dest.cend());
 
 		input.close();
 		if (!input.good())
