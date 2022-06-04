@@ -286,6 +286,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDLSoundService.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform2D.cpp" />
@@ -302,6 +303,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="..\3rdParty\imgui-1.87\imstb_truetype.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BaseObserverEvent.h" />
     <ClInclude Include="BaseSoundService.h" />
     <ClInclude Include="ControllerManager.h" />
     <ClInclude Include="Engine.h" />
@@ -312,6 +314,8 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="LoggingSoundService.h" />
     <ClInclude Include="NullSoundService.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="ObserverEvents.h" />
     <ClInclude Include="PepEnginePCH.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -323,6 +327,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundInclude.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="Transform2D.h" />
