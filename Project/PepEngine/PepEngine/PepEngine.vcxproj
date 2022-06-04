@@ -272,6 +272,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="LoggingSoundService.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PepEnginePCH.cpp">
@@ -312,6 +313,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="Font.h" />
     <ClInclude Include="InputHelper.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="LoggingSoundService.h" />
     <ClInclude Include="NullSoundService.h" />
     <ClInclude Include="Object.h" />
