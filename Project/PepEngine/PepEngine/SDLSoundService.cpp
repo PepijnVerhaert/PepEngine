@@ -48,16 +48,6 @@ public:
 	{
 		m_Quit = true;
 		ProcessSound();
-		if (m_QueueThread.joinable())
-			m_QueueThread.join();		
-		for (auto& pChunk : m_pEffects)
-		{
-			Mix_FreeChunk(pChunk.second);
-		}
-		for (auto& pMus : m_pMusic)
-		{
-			Mix_FreeMusic(pMus.second);
-		}
 		Mix_CloseAudio();
 	}
 
@@ -228,7 +218,7 @@ private:
 
 	void ProcessQueue()
 	{
-		do 
+		while (!m_Quit)
 		{
 			while (!m_WorkQueue.empty())
 			{
@@ -246,8 +236,7 @@ private:
 				m_EventQueue.pop();
 			}
 			lock.unlock();
-		} while (!m_Quit);
-		std::cout << "quit thread\n";
+		}
 	}
 
 	std::map<std::string, Mix_Chunk*> m_pEffects;
@@ -263,7 +252,7 @@ private:
 
 	std::string m_Path;
 
-	/*std::atomic_*/bool m_Quit;
+	std::atomic_bool m_Quit;
 };
 
 
