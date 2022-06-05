@@ -36,6 +36,7 @@ public:
 		,m_Path{""}
 		,m_EventQueue{}
 		,m_WorkQueue{}
+		,m_PlayedSounds{}
 		,m_Mutex{}
 		,m_ConVar{}
 		,m_Quit{false}
@@ -191,7 +192,10 @@ private:
 		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::PlayEffect:
 		{
 			auto args = std::dynamic_pointer_cast<PlayEffectEventArgs>(queueEvent.second);
-			PlayEffect(args->GetFile(), args->GetVolume());
+			if (!PlayedSound(args->GetFile()))
+			{
+				PlayEffect(args->GetFile(), args->GetVolume());
+			}
 			break;
 		}
 		case pep::SDLSoundService::SDLSoundServiceImpl::SDLSoundQueueEvent::PauseEffect:
@@ -226,10 +230,25 @@ private:
 		}
 	}
 
+	bool PlayedSound(const std::string& file)
+	{
+		auto it = std::find_if(m_PlayedSounds.begin(), m_PlayedSounds.end(), [&](std::string& soundFile) {return soundFile == file; });
+		if (it == m_PlayedSounds.cend())
+		{
+			m_PlayedSounds.emplace_back(file);
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
 	void ProcessQueue()
 	{
 		do 
 		{
+			m_PlayedSounds.clear();
 			while (!m_WorkQueue.empty())
 			{
 				//process first event and pop it
@@ -254,6 +273,7 @@ private:
 
 	std::queue<std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>>> m_EventQueue;
 	std::queue<std::pair<SDLSoundQueueEvent, std::shared_ptr<EventArgs>>> m_WorkQueue;
+	std::vector<std::string> m_PlayedSounds;
 
 	std::mutex m_Mutex;
 	std::jthread m_QueueThread;
