@@ -21,7 +21,9 @@ public:
 	LevelLayoutComponent& operator=(const LevelLayoutComponent& other) = delete;
 	LevelLayoutComponent& operator=(LevelLayoutComponent&& other) = delete;
 
-	void Update() {};
+	void Update() override;
+	void Render() const override;
+
 	void AddWalkable(size_t idx);
 	bool MoveDistanceInDirection(Direction dir, float distance, glm::vec2& point) const;
 

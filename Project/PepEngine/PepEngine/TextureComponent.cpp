@@ -9,3 +9,7 @@ pep::TextureComponent::TextureComponent(const std::weak_ptr<Object>& object)
 void pep::TextureComponent::Update()
 {
 }
+
+void pep::TextureComponent::Render() const
+{
+}

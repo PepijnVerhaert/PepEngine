@@ -56,6 +56,10 @@ void MovementComponent::Update()
 	m_Y = 0.f;
 }
 
+void MovementComponent::Render() const
+{
+}
+
 void MovementComponent::Disable()
 {
 	m_CanMove = false;

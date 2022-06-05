@@ -12,6 +12,10 @@ void TestComponent::Update()
 {
 }
 
+void TestComponent::Render() const
+{
+}
+
 void TestComponent::Test()
 {
 	++m_TimesPressed;

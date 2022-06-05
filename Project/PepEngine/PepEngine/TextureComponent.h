@@ -13,7 +13,8 @@ namespace pep
 		TextureComponent& operator=(const TextureComponent& other) = delete;
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
-		void Update();
+		void Update() override;
+		void Render() const override;
 
 	private:
 

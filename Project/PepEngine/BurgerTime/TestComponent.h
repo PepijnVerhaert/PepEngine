@@ -11,7 +11,8 @@ public:
 	TestComponent& operator=(const TestComponent & other) = delete;
 	TestComponent& operator=(TestComponent && other) = delete;
 
-	void Update();
+	void Update() override;
+	void Render() const override;
 	void Test();
 private:
 	int m_TimesPressed;

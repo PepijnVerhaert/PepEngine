@@ -17,7 +17,8 @@ public:
 	void MoveLeft();
 	void MoveRight();
 
-	void Update();
+	void Update() override;
+	void Render() const override;
 
 	void Disable();
 	void Enable();

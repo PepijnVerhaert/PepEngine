@@ -14,6 +14,14 @@ LevelLayoutComponent::LevelLayoutComponent(const std::weak_ptr<pep::Object>& obj
 
 
 
+void LevelLayoutComponent::Update()
+{
+}
+
+void LevelLayoutComponent::Render() const
+{
+}
+
 void LevelLayoutComponent::AddWalkable(size_t idx)
 {
 	size_t x = idx % m_WalkableTiles.size();
