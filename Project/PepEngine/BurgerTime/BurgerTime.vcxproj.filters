@@ -30,6 +30,9 @@
     <ClCompile Include="TestCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="LevelLayoutComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestComponent.h">
@@ -37,6 +40,18 @@
     </ClInclude>
     <ClInclude Include="TestCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenePrefab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLayoutComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
