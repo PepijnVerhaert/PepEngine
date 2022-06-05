@@ -27,6 +27,7 @@ class LevelLayoutComponent final : public pep::BaseComponent
 
 	bool GetTileId(const glm::vec2& pos, size_t x, size_t y) const;
 	bool GetTilePos(glm::vec2& pos, size_t x, size_t y) const;
+	bool GetTilePos(glm::vec2& pos, size_t idx) const;
 private:
 	std::vector<std::vector<bool>> m_WalkableTiles;
 	glm::vec2 m_TileSize;

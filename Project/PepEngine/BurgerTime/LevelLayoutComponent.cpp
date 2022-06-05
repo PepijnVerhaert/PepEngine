@@ -229,3 +229,10 @@ bool LevelLayoutComponent::GetTilePos(glm::vec2& pos, size_t x, size_t y) const
 
 	return true;
 }
+
+bool LevelLayoutComponent::GetTilePos(glm::vec2& pos, size_t idx) const
+{
+	size_t x = idx % m_WalkableTiles.size();
+	size_t y = idx / m_WalkableTiles.size();
+	return GetTilePos(pos, x, y);
+}
