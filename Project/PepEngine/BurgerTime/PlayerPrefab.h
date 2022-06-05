@@ -12,8 +12,8 @@
 std::shared_ptr<pep::Object> CreatePeterPepper(LevelLayoutComponent* pLevelLayout, unsigned int controllerNb, bool useKeyboard)
 {
 	auto peterPepper = std::make_shared<pep::Object>();
-	auto peterMovement = std::make_shared<MovementComponent>(peterPepper, 100.f, pLevelLayout);
-	auto peterVisual = std::make_shared<pep::TextureComponent>(peterPepper, "PeterPepper/PP_Left.png");
+	auto peterMovement = std::make_shared<MovementComponent>(peterPepper, 200.f, pLevelLayout);
+	auto peterVisual = std::make_shared<pep::TextureComponent>(peterPepper, "PeterPepper/PP_Left.png", 30, 32);
 	peterPepper->AddComponent(peterMovement);
 	peterPepper->AddComponent(peterVisual);
 

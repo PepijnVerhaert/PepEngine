@@ -22,7 +22,8 @@ namespace pep
 
 		void GetTextureSize(const Texture2D& texture, int& width, int& height) const;
 
-		void RenderTexture(const Texture2D& texture, float x, float y) const;
+		void RenderTexture(const Texture2D& texture, const float x, const float y) const;
+		void RenderTexture(const Texture2D& texture, const float x, const float y, int width, int height) const;
 		void RenderTexture(const Texture2D& texture, const Rectangle& dst) const;
 		void RenderTexture(const Texture2D& texture, const Rectangle& src, const Rectangle& dst) const;
 		void RenderTexture(const Texture2D& texture, const Rectangle& src, const Rectangle& dst, float angleDEG) const;

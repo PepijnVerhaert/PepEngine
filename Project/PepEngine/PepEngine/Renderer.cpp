@@ -86,6 +86,16 @@ void Renderer::RenderTexture(const Texture2D& texture, const float x, const floa
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, int width, int height) const
+{
+	SDL_Rect dst;
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	dst.w = width;
+	dst.h = height;
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
 void Renderer::RenderTexture(const Texture2D& texture, const Rectangle& dst) const
 {
 	SDL_Rect dstRect;

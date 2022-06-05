@@ -9,6 +9,7 @@ namespace pep
 	{
 	public:
 		TextureComponent(const std::weak_ptr<Object>& object, const std::string& filename);
+		TextureComponent(const std::weak_ptr<Object>& object, const std::string& filename, int width, int height);
 		~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
@@ -23,5 +24,8 @@ namespace pep
 	private:
 		std::shared_ptr<Texture2D> m_pTexture{};
 		bool m_IsVisible;
+		bool m_DifferentSize;
+		int m_Width;
+		int m_Height;
 	};
 }
