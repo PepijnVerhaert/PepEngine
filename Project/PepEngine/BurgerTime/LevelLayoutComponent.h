@@ -24,6 +24,9 @@ class LevelLayoutComponent final : public pep::BaseComponent
 	void Update() {};
 	void AddWalkable(size_t idx);
 	bool MoveDistanceInDirection(Direction dir, float distance, glm::vec2& point) const;
+
+	bool GetTileId(const glm::vec2& pos, size_t x, size_t y) const;
+	bool GetTilePos(glm::vec2& pos, size_t x, size_t y) const;
 private:
 	std::vector<std::vector<bool>> m_WalkableTiles;
 	glm::vec2 m_TileSize;
