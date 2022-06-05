@@ -115,5 +115,5 @@ void Renderer::RenderTexture(const Texture2D& texture, const Rectangle& src, con
 	dstRect.w = static_cast<int>(dst.width);
 	dstRect.h = static_cast<int>(dst.height);
 
-	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect, angleDEG, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect, static_cast<double>(angleDEG), nullptr, SDL_FLIP_NONE);
 }

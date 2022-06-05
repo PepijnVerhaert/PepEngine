@@ -1,12 +1,14 @@
 #pragma once
 #include "BaseComponent.h"
+#include <string>
 
 namespace pep
 {
+	class Texture2D;
 	class TextureComponent final : public BaseComponent
 	{
 	public:
-		TextureComponent(const std::weak_ptr<Object>& object);
+		TextureComponent(const std::weak_ptr<Object>& object, const std::string& filename);
 		~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
@@ -16,7 +18,10 @@ namespace pep
 		void Update() override;
 		void Render() const override;
 
-	private:
+		void SetVisibility(bool isVisible);
 
+	private:
+		std::shared_ptr<Texture2D> m_pTexture{};
+		bool m_IsVisible;
 	};
 }
