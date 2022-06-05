@@ -59,5 +59,8 @@
     <ClInclude Include="MovementComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerPrefab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

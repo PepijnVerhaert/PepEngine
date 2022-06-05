@@ -13,13 +13,13 @@ void SceneManager::Update()
 	}
 }
 
-Scene& SceneManager::CreateScene(const std::string& name)
+Scene* SceneManager::CreateScene(const std::string& name)
 {
 	//if scene with name already exists return that scene
 	Scene* scene = GetScene(name);
 	if (scene != nullptr)
 	{
-		return *scene;
+		return scene;
 	}
 	//otherwise create new scene and return it
 	for (size_t i{}; i < m_pScenes.size(); ++i)
@@ -28,13 +28,13 @@ Scene& SceneManager::CreateScene(const std::string& name)
 		{
 			//cant use make shared since only scenemanager is friended with scene
 			m_pScenes[i] = std::shared_ptr<Scene>( new Scene(name));
-			return *m_pScenes[i].get();
+			return m_pScenes[i].get();
 		}
 	}
 	//scenes vector was full
 	//cant use make shared since only scenemanager is friended with scene
 	m_pScenes.emplace_back(std::shared_ptr<Scene>(new Scene(name)));
-	return *m_pScenes.back().get();
+	return m_pScenes.back().get();
 }
 
 Scene* SceneManager::GetScene(const std::string& name)

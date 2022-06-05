@@ -10,7 +10,7 @@ namespace pep
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene(const std::string& name);
+		Scene* CreateScene(const std::string& name);
 		void RemoveScene(const std::string& name);
 
 		Scene* GetScene(const std::string& name);
@@ -19,6 +19,7 @@ namespace pep
 		void SetSceneInactive(const std::string& name);
 
 		void Update();
+		void Render() const;
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

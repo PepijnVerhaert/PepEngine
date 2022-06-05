@@ -123,6 +123,9 @@
     <ClCompile Include="KeyboardManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PepEnginePCH.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="KeyboardManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -176,6 +176,7 @@
     <ClInclude Include="LevelLayoutComponent.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="ScenePrefab.h" />
     <ClInclude Include="TestCommand.h" />
     <ClInclude Include="TestComponent.h" />
