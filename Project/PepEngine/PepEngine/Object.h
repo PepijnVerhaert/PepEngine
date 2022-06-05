@@ -10,7 +10,7 @@ namespace pep
 	{
 	public:
 		Object();
-		virtual ~Object() = default;
+		~Object();
 		Object(const Object& other) = delete;
 		Object(Object&& other) = delete;
 		Object& operator=(const Object& other) = delete;
@@ -42,8 +42,7 @@ namespace pep
 		}
 
 		void Update();
-		void Start();
-		void End();
+		void Render() const;
 
 	private:
 		void RemoveChild(Object* pChild);

@@ -8,9 +8,18 @@ Object::Object()
 	: m_pComponents{}
 	, m_pParent{ nullptr }
 	, m_pChildren{}
-	, m_Started{false}
-	, m_Ended{false}
+	, m_Started{ false }
+	, m_Ended{ false }
+	, m_IsTransformDirty{ true }
 {
+}
+
+pep::Object::~Object()
+{
+	for (size_t i = 0; i < m_pChildren.size(); i++)
+	{
+		delete m_pChildren[i];
+	}
 }
 
 void Object::AddComponent(const std::shared_ptr<BaseComponent>& pNewComponent)
@@ -56,30 +65,12 @@ void Object::Update()
 	}
 }
 
-void Object::Start()
+void pep::Object::Render() const
 {
-	if (m_Started)
+	for (auto pComponent : m_pComponents)
 	{
-		return;
+		pComponent->Render();
 	}
-	m_Started = true;
-	//for (auto pComponent : m_pComponents)
-	//{
-	//	pComponent->Start();
-	//}
-}
-
-void Object::End()
-{
-	if (m_Ended)
-	{
-		return;
-	}
-	m_Ended = true;
-	//for (auto pComponent : m_pComponents)
-	//{
-	//	pComponent->End();
-	//}
 }
 
 void Object::SetParent(Object* pParent, bool keepWorldPosition)
