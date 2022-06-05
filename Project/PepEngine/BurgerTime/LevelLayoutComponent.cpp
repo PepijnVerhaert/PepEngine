@@ -24,32 +24,164 @@ void LevelLayoutComponent::AddWalkable(size_t idx)
 
 bool LevelLayoutComponent::MoveDistanceInDirection(Direction dir, float distance, glm::vec2& point) const
 {
+	float leftDistance = distance;
 	float epsilon = 0.01f;
 	glm::vec2 destination = point;
+	size_t destX{};
+	size_t destY{};
+	//set destination
 	switch (dir)
 	{
 	case Direction::Up:
-		size_t destX{};
-		size_t destY{};
-		if (GetTileId(point, destX, destY))
-		{
-			if (m_WalkableTiles[destX][destY])
-			{
-
-			}
-		}
+		if (!GetTileId(point, destX, destY))
+			return false;
+		if (destY == 0)
+			return false;
+		--destY;
+		if (!m_WalkableTiles[destX][destY])
+			return false;
+		if (!GetTilePos(destination, destX, destY))
+			return false;
 		break;
 	case Direction::down:
+		if (!GetTileId(point, destX, destY))
+			return false;
+		if (destY >= m_WalkableTiles[0].size()-1)
+			return false;
+		++destY;
+		if (!m_WalkableTiles[destX][destY])
+			return false;
+		if (!GetTilePos(destination, destX, destY))
+			return false;
 		break;
 	case Direction::left:
+		if (!GetTileId(point, destX, destY))
+			return false;
+		if (destX == 0)
+			return false;
+		--destX;
+		if (!m_WalkableTiles[destX][destY])
+			return false;
+		if (!GetTilePos(destination, destX, destY))
+			return false;
 		break;
 	case Direction::right:
+		if (!GetTileId(point, destX, destY))
+			return false;
+		if (destX >= m_WalkableTiles.size() - 1)
+			return false;
+		++destX;
+		if (!m_WalkableTiles[destX][destY])
+			return false;
+		if (!GetTilePos(destination, destX, destY))
+			return false;
+		break;
+	default:
+		return false;
+		break;
+	}
+
+	//move point to destination
+	glm::vec2 distanceToDestination = destination - point;
+	switch (dir)
+	{
+	case Direction::Up:
+	case Direction::down:
+		//move along x to center
+		if (glm::abs(distanceToDestination.x) > epsilon)
+		{
+			if (leftDistance >= glm::abs(distanceToDestination.x))
+			{
+				leftDistance -= glm::abs(distanceToDestination.x);
+				point.x = destination.x;
+			}
+			else
+			{
+				if (distanceToDestination.x > 0.f)
+				{
+					point.x += leftDistance;
+				}
+				else
+				{
+					point.x -= leftDistance;
+				}
+				return true;
+			}
+		}
+		else
+		{
+			point.x = destination.x;
+		}
+		//move along y
+		if (glm::abs(distanceToDestination.y) < leftDistance)
+		{
+			point.y = destination.y;
+			return true;
+		}
+		else
+		{
+			if (distanceToDestination.y > 0.f)
+			{
+				point.y += leftDistance;
+			}
+			else
+			{
+				point.y -= leftDistance;
+			}
+			return true;
+		}
+		break;
+	case Direction::left:
+	case Direction::right:
+		//move along y to center
+		if (glm::abs(distanceToDestination.y) > epsilon)
+		{
+			if (leftDistance >= glm::abs(distanceToDestination.y))
+			{
+				leftDistance -= glm::abs(distanceToDestination.y);
+				point.y = destination.y;
+			}
+			else
+			{
+				if (distanceToDestination.y > 0.f)
+				{
+					point.y += leftDistance;
+				}
+				else
+				{
+					point.y -= leftDistance;
+				}
+				return true;
+			}
+		}
+		else
+		{
+			point.y = destination.y;
+		}
+		//move along x
+		if (glm::abs(distanceToDestination.x) < leftDistance)
+		{
+			point.x = destination.x;
+			return true;
+		}
+		else
+		{
+			if (distanceToDestination.x > 0.f)
+			{
+				point.x += leftDistance;
+			}
+			else
+			{
+				point.x -= leftDistance;
+			}
+			return true;
+		}
 		break;
 	default:
 		break;
 	}
 
-	return dir == Direction::down || distance || point.x;
+	return false;
 }
 
 bool LevelLayoutComponent::GetTileId(const glm::vec2& pos, size_t x, size_t y) const
