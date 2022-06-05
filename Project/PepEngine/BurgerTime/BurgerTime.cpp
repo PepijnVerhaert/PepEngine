@@ -19,7 +19,7 @@
 void LoadGame()
 {
 	pep::ServiceLocator::GetSoundService()->SetFilePath("../Data/Sound/");
-	pep::ServiceLocator::GetSoundService()->PlayMusic("BMG_Level1.mp3", true, 30);
+	pep::ServiceLocator::GetSoundService()->PlayMusic("BGM_Menu.mp3", true, 30);
 	CreateTestScene();
 }
 
