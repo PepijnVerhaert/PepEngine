@@ -1,10 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
 
+class MovementComponent;
 class TestComponent final : public pep::BaseComponent
 {
 public:
-	TestComponent(const std::weak_ptr<pep::Object>& object);
+	TestComponent(const std::weak_ptr<pep::Object>& object, MovementComponent* pMove);
 	~TestComponent() = default;
 	TestComponent(const TestComponent & other) = delete;
 	TestComponent(TestComponent && other) = delete;
@@ -16,5 +17,6 @@ public:
 	void Test();
 private:
 	int m_TimesPressed;
+	MovementComponent* m_pMove;
 };
 
