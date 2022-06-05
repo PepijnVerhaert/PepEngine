@@ -6,20 +6,12 @@ using namespace pep;
 
 Object::Object()
 	: m_pComponents{}
-	, m_pParent{ nullptr }
+	, m_pParent{}
 	, m_pChildren{}
 	, m_Started{ false }
 	, m_Ended{ false }
 	, m_IsTransformDirty{ true }
 {
-}
-
-pep::Object::~Object()
-{
-	for (size_t i = 0; i < m_pChildren.size(); i++)
-	{
-		delete m_pChildren[i];
-	}
 }
 
 void Object::AddComponent(const std::shared_ptr<BaseComponent>& pNewComponent)
@@ -73,7 +65,7 @@ void pep::Object::Render() const
 	}
 }
 
-void Object::SetParent(Object* pParent, bool keepWorldPosition)
+void Object::SetParent(std::shared_ptr<Object> pChild, std::shared_ptr<Object> pParent, bool keepWorldPosition)
 {
 	//Update position, rotation and scale
 	if (pParent == nullptr)
@@ -89,16 +81,17 @@ void Object::SetParent(Object* pParent, bool keepWorldPosition)
 		SetTransformDirty();
 	}
 	//Remove itself as a child from the previous parent (if any) 
-	if (m_pParent)
+	auto pPreviousParent = m_pParent.lock();
+	if (pPreviousParent)
 	{
-		m_pParent->RemoveChild(this);
+		pPreviousParent->RemoveChild(pChild);
 	}
 	//Set the given parent on itself
 	m_pParent = pParent;
 	//Add itself as a child to the given parent
-	if (m_pParent)
+	if (pParent)
 	{
-		m_pParent->AddChild(this);
+		pParent->AddChild(pChild);
 	}
 }
 
@@ -107,7 +100,7 @@ void Object::SetTransformDirty()
 	m_IsTransformDirty = true;
 }
 
-void Object::RemoveChild(Object* pChild)
+void Object::RemoveChild(std::shared_ptr<Object> pChild)
 {
 	for (size_t i = 0; i < m_pChildren.size(); ++i)
 	{
@@ -120,14 +113,16 @@ void Object::RemoveChild(Object* pChild)
 	//Remove the given child from the children list
 }
 
-void Object::AddChild(Object* pChild)
+void Object::AddChild(std::shared_ptr<Object> pChild)
 {
 	m_pChildren.push_back(pChild);
 	//	• Add the child to its children list.
 }
 
-void Object::SetLocalTransform(const Transform2D& /*transform*/)
+void Object::SetLocalTransform(const Transform2D& transform)
 {
+	m_LocalTransform.SetPosition(transform.GetPosition());
+	SetTransformDirty();
 }
 
 const Transform2D& Object::GetWorldTransform()
@@ -148,10 +143,11 @@ void Object::UpdateWorldTransform()
 {
 	if (m_IsTransformDirty)
 	{
-		if (m_pParent == nullptr)
+		auto pParent = m_pParent.lock();
+		if (pParent == nullptr)
 			m_WorldTransform = m_LocalTransform;
 		else
-			m_WorldTransform.SetPosition(m_pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition());
+			m_WorldTransform.SetPosition(pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition());
 	}
 	m_IsTransformDirty = false;
 }

@@ -3,17 +3,24 @@
 #include "Scene.h"
 #include "Object.h"
 #include "InputManager.h"
+#include <memory>
 
 #include "TestComponent.h"
 #include "TestCommand.h"
+#include "PlayerPrefab.h"
+#include "LevelLayoutComponent.h"
 
 void CreateTestScene()
 {
 	auto scene = pep::SceneManager::GetInstance().CreateScene("Test");
+	pep::SceneManager::GetInstance().SetSceneActive("Test");
+	pep::SceneManager::GetInstance().SetSceneVisible("Test");
 	auto testObject = std::make_shared<pep::Object>();
-	testObject->AddComponent(std::make_shared<TestComponent>(testObject));
+	auto layoutComponent = std::make_shared<LevelLayoutComponent>(testObject, static_cast<size_t>(17), static_cast<size_t>(12), glm::vec2{ 24.f, 32.f }, glm::vec2{});
+	testObject->AddComponent(layoutComponent);
 	scene->Add(testObject);
 
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::Button_South, pep::ButtonState::PressedThisFrame, std::make_shared<TestCommand>(testObject.get()), 0);
-	pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_Y, pep::ButtonState::PressedThisFrame, std::make_shared<TestCommand>(testObject.get()));
+	auto player1 = CreatePeterPepper(layoutComponent.get(), 0, true);
+	player1->SetLocalTransform(pep::Transform2D{ glm::vec2{100.f, 100.f} });
+	scene->Add(player1);
 }

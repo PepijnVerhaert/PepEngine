@@ -58,7 +58,7 @@ void pep::Engine::Initialize()
 	ServiceLocator::SetSoundService(m_pLoggingSoundService);
 
 	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/Textures");
+	ResourceManager::GetInstance().Init("../Data/Textures/");
 }
 
 void pep::Engine::Cleanup()

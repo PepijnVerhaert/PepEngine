@@ -167,7 +167,11 @@
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="LevelLayoutComponent.cpp" />
+    <ClCompile Include="MoveDownCommand.cpp" />
+    <ClCompile Include="MoveLeftCommand.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="MoveRightCommand.cpp" />
+    <ClCompile Include="MoveUpCommand.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
@@ -175,7 +179,11 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="LevelLayoutComponent.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="MoveDownCommand.h" />
+    <ClInclude Include="MoveLeftCommand.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="MoveRightCommand.h" />
+    <ClInclude Include="MoveUpCommand.h" />
     <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="ScenePrefab.h" />
     <ClInclude Include="TestCommand.h" />

@@ -1,6 +1,7 @@
 #include "MovementComponent.h"
 #include "Object.h"
 #include "LevelLayoutComponent.h"
+#include "GameTime.h"
 
 MovementComponent::MovementComponent(const std::weak_ptr<pep::Object>& object, float speed, LevelLayoutComponent* pLevelLayout)
 	:pep::BaseComponent(object)
@@ -34,9 +35,10 @@ void MovementComponent::MoveRight()
 
 void MovementComponent::Update()
 {
-	if (m_CanMove)
+	if (m_CanMove && m_pLevelLayout)
 	{
-		auto transform = m_pObject.lock()->GetLocalTransform();
+		auto pObject = m_pObject.lock();
+		auto transform = pObject->GetLocalTransform();
 		auto pos = transform.GetPosition();
 		Direction dir{Direction::None};
 		if (m_X > 0.5f)
@@ -48,9 +50,12 @@ void MovementComponent::Update()
 		else if (m_Y < -0.5f)
 			dir = Direction::Up;
 
-		m_pLevelLayout->MoveDistanceInDirection(dir, m_Speed, pos);
-
+		if (dir != Direction::None)
+		{
+			m_pLevelLayout->MoveDistanceInDirection(dir, m_Speed * pep::GameTime::GetInstance().GetDeltaTime(), pos);
 		transform.SetPosition(pos);
+		pObject->SetLocalTransform(transform);
+		}
 	}
 	m_X = 0.f;
 	m_Y = 0.f;

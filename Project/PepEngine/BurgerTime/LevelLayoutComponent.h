@@ -27,7 +27,7 @@ public:
 	void AddWalkable(size_t idx);
 	bool MoveDistanceInDirection(Direction dir, float distance, glm::vec2& point) const;
 
-	bool GetTileId(const glm::vec2& pos, size_t x, size_t y) const;
+	bool GetTileId(const glm::vec2& pos, size_t& x, size_t& y) const;
 	bool GetTilePos(glm::vec2& pos, size_t x, size_t y) const;
 	bool GetTilePos(glm::vec2& pos, size_t idx) const;
 private:

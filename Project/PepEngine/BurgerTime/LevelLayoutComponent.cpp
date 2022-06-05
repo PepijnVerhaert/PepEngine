@@ -8,8 +8,8 @@ LevelLayoutComponent::LevelLayoutComponent(const std::weak_ptr<pep::Object>& obj
 	,m_GridOffset{ offset }
 {
 	std::vector<bool> fillVector{};
-	fillVector.resize(gridHeight, false);
-	m_WalkableTiles.resize(gridWidth);
+	fillVector.resize(gridHeight, true);
+	m_WalkableTiles.resize(gridWidth, fillVector);
 }
 
 
@@ -33,7 +33,7 @@ void LevelLayoutComponent::AddWalkable(size_t idx)
 bool LevelLayoutComponent::MoveDistanceInDirection(Direction dir, float distance, glm::vec2& point) const
 {
 	float leftDistance = distance;
-	float epsilon = 0.01f;
+	float epsilon = 0.0001f;
 	glm::vec2 destination = point;
 	size_t destX{};
 	size_t destY{};
@@ -192,7 +192,7 @@ bool LevelLayoutComponent::MoveDistanceInDirection(Direction dir, float distance
 	return false;
 }
 
-bool LevelLayoutComponent::GetTileId(const glm::vec2& pos, size_t x, size_t y) const
+bool LevelLayoutComponent::GetTileId(const glm::vec2& pos, size_t& x, size_t& y) const
 {
 	float gridSizeX = static_cast<float>(m_WalkableTiles.size());
 	float gridSizeY = static_cast<float>(m_WalkableTiles[0].size());

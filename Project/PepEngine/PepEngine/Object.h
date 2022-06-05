@@ -10,13 +10,13 @@ namespace pep
 	{
 	public:
 		Object();
-		~Object();
+		~Object() = default;
 		Object(const Object& other) = delete;
 		Object(Object&& other) = delete;
 		Object& operator=(const Object& other) = delete;
 		Object& operator=(Object&& other) = delete;
 
-		void SetParent(Object* pParent, bool keepWorldTransform);
+		void SetParent(std::shared_ptr<Object> pChild, std::shared_ptr<Object> pParent, bool keepWorldTransform);
 		
 		void SetLocalTransform(const Transform2D& transform);
 		const Transform2D& GetWorldTransform();
@@ -45,8 +45,8 @@ namespace pep
 		void Render() const;
 
 	private:
-		void RemoveChild(Object* pChild);
-		void AddChild(Object* pChild);
+		void RemoveChild(std::shared_ptr<Object> pChild);
+		void AddChild(std::shared_ptr<Object> pChild);
 
 		bool m_Started;
 		bool m_Ended;
@@ -56,7 +56,7 @@ namespace pep
 		Transform2D m_LocalTransform;
 
 		std::vector<std::shared_ptr<BaseComponent>> m_pComponents;
-		Object* m_pParent;
-		std::vector<Object*> m_pChildren;
+		std::weak_ptr<Object> m_pParent;
+		std::vector<std::shared_ptr<Object>> m_pChildren;
 	};
 }
