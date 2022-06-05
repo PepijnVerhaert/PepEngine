@@ -5,11 +5,11 @@
 using namespace pep;
 
 Transform2D::Transform2D()
-	:Transform2D{ {0.f, 0.f, 0.f}/*, {1.f, 1.f}, 0.f*/ }
+	:Transform2D{ {0.f, 0.f}/*, {1.f, 1.f}, 0.f*/ }
 {
 }
 
-Transform2D::Transform2D(const glm::vec3& /*position*/)
+Transform2D::Transform2D(const glm::vec2& /*position*/)
 	//: Transform2D{ position/*, {1.f, 1.f}, 0.f*/ }
 {
 }
@@ -36,7 +36,7 @@ Transform2D& Transform2D::operator=(const Transform2D& other)
 	return *this;
 }
 
-const glm::vec3& Transform2D::GetPosition() const
+const glm::vec2& Transform2D::GetPosition() const
 {
 	return m_Position;
 }
@@ -51,14 +51,14 @@ const glm::vec3& Transform2D::GetPosition() const
 //	return m_Rotation;
 //}
 
-void Transform2D::SetPosition(const glm::vec3& position)
+void Transform2D::SetPosition(const glm::vec2& position)
 {
 	m_Position = position;
 }
 
-void Transform2D::SetPosition(float x, float y, float z)
+void Transform2D::SetPosition(float x, float y)
 {
-	SetPosition({ x, y, z });
+	SetPosition({ x, y});
 }
 
 //void Transform2D::SetScale(const glm::vec2& scale)

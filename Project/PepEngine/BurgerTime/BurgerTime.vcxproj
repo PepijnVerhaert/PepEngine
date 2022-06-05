@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="LevelLayoutComponent.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
@@ -174,6 +175,7 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="LevelLayoutComponent.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="ScenePrefab.h" />
     <ClInclude Include="TestCommand.h" />
     <ClInclude Include="TestComponent.h" />

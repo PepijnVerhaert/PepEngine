@@ -1,11 +1,11 @@
 #include "LevelLayoutComponent.h"
 #include "BinaryReader.h"
 
-LevelLayoutComponent::LevelLayoutComponent(const std::weak_ptr<pep::Object>& object, size_t gridWidth, size_t gridHeight)
+LevelLayoutComponent::LevelLayoutComponent(const std::weak_ptr<pep::Object>& object, size_t gridWidth, size_t gridHeight, const glm::vec2& tileSize, const glm::vec2& offset)
 	:pep::BaseComponent(object)
 	,m_WalkableTiles{}
-	,m_TileSize{}
-	,m_GridOffset{}
+	,m_TileSize{ tileSize }
+	,m_GridOffset{ offset }
 {
 	std::vector<bool> fillVector{};
 	fillVector.resize(gridHeight, false);

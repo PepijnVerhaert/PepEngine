@@ -8,13 +8,13 @@
 
 #include <vector>
 #include <string>
-#include "BinaryReader.h"
 
 #include "Helper.h"
 
 class LevelLayoutComponent final : public pep::BaseComponent
 {
-	LevelLayoutComponent(const std::weak_ptr<pep::Object>& object, size_t gridWidth, size_t gridHeight);
+public:
+	LevelLayoutComponent(const std::weak_ptr<pep::Object>& object, size_t gridWidth, size_t gridHeight, const glm::vec2& tileSize, const glm::vec2& offset);
 	~LevelLayoutComponent() = default;
 	LevelLayoutComponent(const LevelLayoutComponent& other) = delete;
 	LevelLayoutComponent(LevelLayoutComponent&& other) = delete;
