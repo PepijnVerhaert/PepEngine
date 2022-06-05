@@ -18,12 +18,16 @@ namespace pep
 		Scene* SetSceneActive(const std::string& name);
 		void SetSceneInactive(const std::string& name);
 
+		Scene* SetSceneVisible(const std::string& name);
+		void SetSceneInvisible(const std::string& name);
+
 		void Update();
 		void Render() const;
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_pScenes;
-		std::vector<std::shared_ptr<Scene>> m_pActiveScenes;
+		std::vector<std::shared_ptr<Scene>> m_pScenes{};
+		std::vector<std::shared_ptr<Scene>> m_pActiveScenes{};
+		std::vector<std::shared_ptr<Scene>> m_pVisibleScenes{};
 	};
 }

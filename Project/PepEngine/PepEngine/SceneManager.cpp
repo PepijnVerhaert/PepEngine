@@ -13,6 +13,14 @@ void SceneManager::Update()
 	}
 }
 
+void pep::SceneManager::Render() const
+{
+	for (size_t i{}; i < m_pVisibleScenes.size(); ++i)
+	{
+		m_pVisibleScenes[i]->Render();
+	}
+}
+
 Scene* SceneManager::CreateScene(const std::string& name)
 {
 	//if scene with name already exists return that scene
@@ -71,6 +79,54 @@ void pep::SceneManager::SetSceneInactive(const std::string& name)
 		}
 	}
 	//scene was not active
+}
+
+Scene* pep::SceneManager::SetSceneVisible(const std::string& name)
+{
+	for (size_t i{}; i < m_pScenes.size(); ++i)
+	{
+		if (m_pScenes[i] == nullptr)
+		{
+			continue;
+		}
+		//find the right scene
+		if (m_pScenes[i]->GetName() == name)
+		{
+			for (size_t j{}; j < m_pVisibleScenes.size(); ++j)
+			{
+				if (m_pVisibleScenes[j] != nullptr)
+				{
+					continue;
+				}
+				//find empty slot to assign
+				m_pVisibleScenes[j] = m_pScenes[i];
+				return m_pVisibleScenes[j].get();
+			}
+			//if there was no empty slot push back
+			m_pVisibleScenes.push_back(m_pScenes[i]);
+			return m_pVisibleScenes.back().get();
+		}
+	}
+	//right scene was not found
+	return nullptr;
+}
+
+void pep::SceneManager::SetSceneInvisible(const std::string& name)
+{
+	for (size_t i{}; i < m_pVisibleScenes.size(); ++i)
+	{
+		if (m_pVisibleScenes[i] == nullptr)
+		{
+			continue;
+		}
+		//find the right scene
+		if (m_pVisibleScenes[i]->GetName() == name)
+		{
+			m_pVisibleScenes[i] = nullptr;
+			return;
+		}
+	}
+	//scene was not visible
 }
 
 Scene* pep::SceneManager::SetSceneActive(const std::string& name)

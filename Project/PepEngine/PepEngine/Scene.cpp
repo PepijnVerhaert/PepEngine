@@ -59,3 +59,11 @@ void Scene::Update()
 		m_pObjects[i]->Update();
 	}
 }
+
+void pep::Scene::Render() const
+{
+	for (size_t i{}; i < m_pObjects.size(); ++i)
+	{
+		m_pObjects[i]->Render();
+	}
+}

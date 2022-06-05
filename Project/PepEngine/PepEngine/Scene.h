@@ -14,6 +14,7 @@ namespace pep
 		const std::string& GetName() const;
 
 		void Update();
+		void Render() const;
 
 		~Scene() = default;
 		Scene(const Scene& other) = delete;
