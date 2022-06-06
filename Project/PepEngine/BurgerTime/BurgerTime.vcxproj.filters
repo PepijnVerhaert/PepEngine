@@ -48,6 +48,9 @@
     <ClCompile Include="MoveRightCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="MovementControlComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestComponent.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="MoveRightCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementControlComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

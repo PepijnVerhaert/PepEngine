@@ -13,13 +13,32 @@
 
 void CreateTestScene()
 {
+	Gamemode gamemode = Gamemode::Coop;
+
 	auto scene = pep::SceneManager::GetInstance().CreateScene("Test");
 	pep::SceneManager::GetInstance().SetSceneActive("Test");
 	pep::SceneManager::GetInstance().SetSceneVisible("Test");
 
-	auto player1 = CreatePeterPepper(nullptr, 0, true);
+	auto player1 = CreatePeterPepper(nullptr, 1, true);
 	player1->SetLocalTransform(pep::Transform2D{ glm::vec2{100.f, 100.f} });
 	scene->Add(player1);
 
-	LoadLevel("../Data/level1.pep", *scene, Gamemode::Single, player1.get(), nullptr);
+	pep::Object* pPlayer2 = nullptr;
+	switch (gamemode)
+	{
+	case Gamemode::Versus:
+		break;
+	case Gamemode::Coop:
+	{
+		auto player2 = CreatePeterPepper(nullptr, 0, false);
+		player2->SetLocalTransform(pep::Transform2D{ glm::vec2{100.f, 100.f} });
+		scene->Add(player2);
+		pPlayer2 = player2.get();
+		break;
+	}
+	default:
+		break;
+	}
+
+	LoadLevel("../Data/level1.pep", *scene, gamemode, player1.get(), pPlayer2);
 }
