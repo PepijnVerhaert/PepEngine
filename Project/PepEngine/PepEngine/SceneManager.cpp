@@ -1,6 +1,5 @@
 #include "PepEnginePCH.h"
 #include "SceneManager.h"
-#include "InputManager.h"
 #include "Scene.h"
 
 using namespace pep;

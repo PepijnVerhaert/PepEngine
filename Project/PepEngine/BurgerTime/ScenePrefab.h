@@ -2,7 +2,6 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Object.h"
-#include "InputManager.h"
 #include <memory>
 
 #include "TestComponent.h"
@@ -19,26 +18,39 @@ void CreateTestScene()
 	pep::SceneManager::GetInstance().SetSceneActive("Test");
 	pep::SceneManager::GetInstance().SetSceneVisible("Test");
 
-	auto player1 = CreatePeterPepper(nullptr, 1, true);
-	player1->SetLocalTransform(pep::Transform2D{ glm::vec2{100.f, 100.f} });
-	scene->Add(player1);
 
-	pep::Object* pPlayer2 = nullptr;
+
+	std::shared_ptr<pep::Object> pPlayer1{};
+	std::shared_ptr<pep::Object> pPlayer2{};
 	switch (gamemode)
 	{
-	case Gamemode::Versus:
+	case Gamemode::Single:
+	{
+		pPlayer1 = CreatePeterPepper(nullptr, 0, true);
+		scene->Add(pPlayer1);
 		break;
+	}
+	case Gamemode::Versus:
+	{
+		pPlayer1 = CreatePeterPepper(nullptr, 1, true);
+		scene->Add(pPlayer1);
+
+		pPlayer2 = CreateHotdogPlayer(nullptr, 0, false);
+		scene->Add(pPlayer2);
+		break;
+	}
 	case Gamemode::Coop:
 	{
-		auto player2 = CreatePeterPepper(nullptr, 0, false);
-		player2->SetLocalTransform(pep::Transform2D{ glm::vec2{100.f, 100.f} });
-		scene->Add(player2);
-		pPlayer2 = player2.get();
+		pPlayer1 = CreatePeterPepper(nullptr, 1, true);
+		scene->Add(pPlayer1);
+
+		pPlayer2 = CreatePeterPepper(nullptr, 0, false);
+		scene->Add(pPlayer2);
 		break;
 	}
 	default:
 		break;
 	}
 
-	LoadLevel("../Data/level1.pep", *scene, gamemode, player1.get(), pPlayer2);
+	LoadLevel("../Data/level1.pep", *scene, gamemode, pPlayer1, pPlayer2);
 }

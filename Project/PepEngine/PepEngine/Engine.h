@@ -5,6 +5,7 @@ struct SDL_Window;
 namespace pep
 {
 	class BaseSoundService;
+	class BaseInputService;
 	class Engine final
 	{
 	public:
@@ -17,5 +18,6 @@ namespace pep
 		//engine owns all original services
 		BaseSoundService* m_pSoundService{nullptr};
 		BaseSoundService* m_pLoggingSoundService{nullptr};
+		BaseInputService* m_pInputService{nullptr};
 	};
 }

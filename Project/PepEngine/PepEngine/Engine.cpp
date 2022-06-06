@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include "GameTime.h"
 #include "SceneManager.h"
-#include "InputManager.h"
+#include "InputService.h"
 #include "ServiceLocator.h"
 #include "SDLSoundService.h"
 #include "LoggingSoundService.h"
@@ -57,6 +57,9 @@ void pep::Engine::Initialize()
 	m_pLoggingSoundService = new LoggingSoundService(m_pSoundService);
 	ServiceLocator::SetSoundService(m_pLoggingSoundService);
 
+	m_pInputService = new InputService();
+	ServiceLocator::SetInputService(m_pInputService);
+
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/Textures/");
 }
@@ -65,6 +68,7 @@ void pep::Engine::Cleanup()
 {
 	delete m_pLoggingSoundService;
 	delete m_pSoundService;
+	delete m_pInputService;
 
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
@@ -81,7 +85,6 @@ void pep::Engine::Run(const std::function<void()>& loadGame)
 	{
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
-		auto& input = InputManager::GetInstance();
 
 		bool quit = false;
 		int msPerFrame = 16;
@@ -92,8 +95,8 @@ void pep::Engine::Run(const std::function<void()>& loadGame)
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			GameTime::GetInstance().SetDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
 
-			input.Update();
-			quit = input.QuitGame();
+			ServiceLocator::GetInputService()->Update();
+			quit = ServiceLocator::GetInputService()->QuitGame();
 
 			sceneManager.Update();
 			ServiceLocator::GetSoundService()->ProcessSound();

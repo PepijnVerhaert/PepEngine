@@ -11,7 +11,7 @@
 #include "EnemyHitboxComponent.h"
 
 
-void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pep::Object* pPlayer1, pep::Object* pPlayer2)
+void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, std::shared_ptr<pep::Object> pPlayer1, std::shared_ptr<pep::Object> pPlayer2)
 {
 	size_t bytesPerTile = 2;
 	size_t gridWidth = 17;
@@ -77,7 +77,7 @@ void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pe
 				{
 				case Gamemode::Single:
 				{
-					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1);
+					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1.get());
 					auto pHotdogHitbox = std::make_shared<EnemyHitboxComponent>(pHotdog, 24.f, 32.f, pHotdog->GetComponent<MovementComponent>().get());
 					pHotdog->AddComponent(pHotdogHitbox);
 					if (pPlayer1)
@@ -90,12 +90,12 @@ void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pe
 				}
 				case Gamemode::Coop:
 				{
-					pep::Object* pHotdogTarget = pPlayer1;
+					pep::Object* pHotdogTarget = pPlayer1.get();
 					if ((i / 2) % 2)
 					{
-						pHotdogTarget = pPlayer2;
+						pHotdogTarget = pPlayer2.get();
 					}
-					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1);
+					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1.get());
 					auto pHotdogHitbox = std::make_shared<EnemyHitboxComponent>(pHotdog, 24.f, 32.f, pHotdog->GetComponent<MovementComponent>().get());
 					pHotdog->AddComponent(pHotdogHitbox);
 					if (pPlayer1)
@@ -119,7 +119,14 @@ void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pe
 				switch (gamemode)
 				{
 				case Gamemode::Versus:
-					pPlayer2->SetLocalTransform(pep::Transform2D{ pos });
+					if (pPlayer2)
+					{
+						pPlayer2->SetLocalTransform(pep::Transform2D{ pos });
+						auto pHotdogHitbox = std::make_shared<EnemyHitboxComponent>(pPlayer2, 24.f, 32.f, pPlayer2->GetComponent<MovementComponent>().get());
+						pPlayer2->AddComponent(pHotdogHitbox);
+						if (pPlayer1)
+							pPlayer1->GetComponent<SprayPepperComponent>()->AddObserver(pHotdogHitbox);
+					}
 					break;
 				case Gamemode::Single:
 				case Gamemode::Coop:

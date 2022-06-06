@@ -40,6 +40,9 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{926ac762-b5bb-49ac-aa83-7af5b5e76ca1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Services\Input">
+      <UniqueIdentifier>{2674bfca-6553-47ce-9751-03df6a1a9a64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -90,9 +93,6 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Singletons</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
@@ -128,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="BinaryReader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputService.cpp">
+      <Filter>Services\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Singletons</Filter>
@@ -256,6 +256,18 @@
     </ClInclude>
     <ClInclude Include="TextureComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseInputService.h">
+      <Filter>Services\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="NullInputService.h">
+      <Filter>Services\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputService.h">
+      <Filter>Services\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputInclude.h">
+      <Filter>Services\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

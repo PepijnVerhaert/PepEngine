@@ -4,13 +4,14 @@
 #include "MovementComponent.h"
 #include "TextureComponent.h"
 #include "SprayPepperComponent.h"
-#include "InputManager.h"
+#include "InputInclude.h"
 #include "MoveUpCommand.h"
 #include "MoveDownCommand.h"
 #include "MoveLeftCommand.h"
 #include "MoveRightCommand.h"
 #include "SprayLeftCommand.h"
 #include "SprayRightCommand.h"
+#include "EnemyPrefab.h"
 
 std::shared_ptr<pep::Object> CreatePeterPepper(LevelLayoutComponent* pLevelLayout, unsigned int controllerNb, bool useKeyboard)
 {
@@ -40,24 +41,45 @@ std::shared_ptr<pep::Object> CreatePeterPepper(LevelLayoutComponent* pLevelLayou
 
 
 
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::DPad_Up, pep::ButtonState::Down, std::make_shared<MoveUpCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::DPad_Down, pep::ButtonState::Down, std::make_shared<MoveDownCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::DPad_Left, pep::ButtonState::Down, std::make_shared<MoveLeftCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::DPad_Right, pep::ButtonState::Down, std::make_shared<MoveRightCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Up, pep::ButtonState::Down, std::make_shared<MoveUpCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Down, pep::ButtonState::Down, std::make_shared<MoveDownCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Left, pep::ButtonState::Down, std::make_shared<MoveLeftCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Right, pep::ButtonState::Down, std::make_shared<MoveRightCommand>(peterPepper.get(), peterMovement.get()), controllerNb);
 
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::Button_West, pep::ButtonState::PressedThisFrame, std::make_shared<SprayLeftCommand>(peterPepper.get()), controllerNb);
-	pep::InputManager::GetInstance().AddControllerCommand(pep::ControllerButton::Button_East, pep::ButtonState::PressedThisFrame, std::make_shared<SprayRightCommand>(peterPepper.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::Button_West, pep::ButtonState::PressedThisFrame, std::make_shared<SprayLeftCommand>(peterPepper.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::Button_East, pep::ButtonState::PressedThisFrame, std::make_shared<SprayRightCommand>(peterPepper.get()), controllerNb);
 
 	if (useKeyboard)
 	{
-		pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_W, pep::ButtonState::Down, std::make_shared<MoveUpCommand>(peterPepper.get(), peterMovement.get()));
-		pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_S, pep::ButtonState::Down, std::make_shared<MoveDownCommand>(peterPepper.get(), peterMovement.get()));
-		pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_A, pep::ButtonState::Down, std::make_shared<MoveLeftCommand>(peterPepper.get(), peterMovement.get()));
-		pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_D, pep::ButtonState::Down, std::make_shared<MoveRightCommand>(peterPepper.get(), peterMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_W, pep::ButtonState::Down, std::make_shared<MoveUpCommand>(peterPepper.get(), peterMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_S, pep::ButtonState::Down, std::make_shared<MoveDownCommand>(peterPepper.get(), peterMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_A, pep::ButtonState::Down, std::make_shared<MoveLeftCommand>(peterPepper.get(), peterMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_D, pep::ButtonState::Down, std::make_shared<MoveRightCommand>(peterPepper.get(), peterMovement.get()));
 
-		pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_LEFT, pep::ButtonState::PressedThisFrame, std::make_shared<SprayLeftCommand>(peterPepper.get()));
-		pep::InputManager::GetInstance().AddKeyboardCommand(pep::KeyboardKey::p_RIGHT, pep::ButtonState::PressedThisFrame, std::make_shared<SprayRightCommand>(peterPepper.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_LEFT, pep::ButtonState::PressedThisFrame, std::make_shared<SprayLeftCommand>(peterPepper.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_RIGHT, pep::ButtonState::PressedThisFrame, std::make_shared<SprayRightCommand>(peterPepper.get()));
 	}
 
 	return peterPepper;
+}
+
+std::shared_ptr<pep::Object> CreateHotdogPlayer(LevelLayoutComponent* pLevelLayout, unsigned int controllerNb, bool useKeyboard)
+{
+	auto hotdog = CreateHotdog(pLevelLayout, true, nullptr);
+	auto hotdogMovement = hotdog->GetComponent<MovementComponent>();
+
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Up, pep::ButtonState::Down, std::make_shared<MoveUpCommand>(hotdog.get(), hotdogMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Down, pep::ButtonState::Down, std::make_shared<MoveDownCommand>(hotdog.get(), hotdogMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Left, pep::ButtonState::Down, std::make_shared<MoveLeftCommand>(hotdog.get(), hotdogMovement.get()), controllerNb);
+	pep::ServiceLocator::GetInputService()->AddControllerCommand(pep::ControllerButton::DPad_Right, pep::ButtonState::Down, std::make_shared<MoveRightCommand>(hotdog.get(), hotdogMovement.get()), controllerNb);
+
+	if (useKeyboard)
+	{
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_W, pep::ButtonState::Down, std::make_shared<MoveUpCommand>(hotdog.get(), hotdogMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_S, pep::ButtonState::Down, std::make_shared<MoveDownCommand>(hotdog.get(), hotdogMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_A, pep::ButtonState::Down, std::make_shared<MoveLeftCommand>(hotdog.get(), hotdogMovement.get()));
+		pep::ServiceLocator::GetInputService()->AddKeyboardCommand(pep::KeyboardKey::p_D, pep::ButtonState::Down, std::make_shared<MoveRightCommand>(hotdog.get(), hotdogMovement.get()));
+	}
+
+	return hotdog;
 }

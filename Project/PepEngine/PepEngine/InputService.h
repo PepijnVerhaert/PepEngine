@@ -1,5 +1,5 @@
 #pragma once
-#include "Singleton.h"
+#include "BaseInputService.h"
 #include "InputHelper.h"
 #include "ControllerManager.h"
 #include "KeyboardManager.h"
@@ -8,9 +8,17 @@
 
 namespace pep
 {
-	class InputManager final : public Singleton<InputManager>
+	class InputService final : public BaseInputService
 	{
 	public:
+		InputService() = default;
+		~InputService() = default;
+		InputService(const InputService& other) = delete;
+		InputService(InputService&& other) = delete;
+		InputService& operator=(const InputService& other) = delete;
+		InputService& operator=(InputService&& other) = delete;
+
+
 		bool QuitGame();
 		void Update();
 		bool IsControllerButtonActive(const ControllerButton& button, const ButtonState& state, unsigned int playerId) const;
@@ -23,8 +31,6 @@ namespace pep
 		void RemoveKeyboardCommand(const KeyboardKey& key, const ButtonState& state);
 
 	private:
-		friend class Singleton<InputManager>;
-		InputManager() = default;
 		bool m_QuitGame = false;
 		std::unique_ptr<ControllerManager> m_pControllerManager = std::make_unique<ControllerManager>();
 		std::unique_ptr<KeyboardManager> m_pKeyboardManager = std::make_unique<KeyboardManager>();

@@ -271,7 +271,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="ControllerManager.cpp" />
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InputService.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="LoggingSoundService.cpp" />
@@ -306,6 +306,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="..\3rdParty\imgui-1.87\imstb_truetype.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BaseInputService.h" />
     <ClInclude Include="BaseObserverEvent.h" />
     <ClInclude Include="BaseSoundService.h" />
     <ClInclude Include="BinaryReader.h" />
@@ -314,9 +315,11 @@ xcopy $(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll $(OutputPath
     <ClInclude Include="EventArgs.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="InputHelper.h" />
-    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputInclude.h" />
+    <ClInclude Include="InputService.h" />
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="LoggingSoundService.h" />
+    <ClInclude Include="NullInputService.h" />
     <ClInclude Include="NullSoundService.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Observer.h" />
