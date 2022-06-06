@@ -50,11 +50,10 @@ void MovementComponent::Update()
 		else if (m_Y < -0.5f)
 			dir = Direction::Up;
 
-		if (dir != Direction::None)
+		if (m_pLevelLayout->MoveDistanceInDirection(dir, m_Speed * pep::GameTime::GetInstance().GetDeltaTime(), pos))
 		{
-			m_pLevelLayout->MoveDistanceInDirection(dir, m_Speed * pep::GameTime::GetInstance().GetDeltaTime(), pos);
-		transform.SetPosition(pos);
-		pObject->SetLocalTransform(transform);
+			transform.SetPosition(pos);
+			pObject->SetLocalTransform(transform);
 		}
 	}
 	m_X = 0.f;
@@ -73,4 +72,9 @@ void MovementComponent::Disable()
 void MovementComponent::Enable()
 {
 	m_CanMove = true;
+}
+
+void MovementComponent::SetLevelLayoutComponent(LevelLayoutComponent* layout)
+{
+	m_pLevelLayout = layout;
 }

@@ -55,6 +55,10 @@ void Object::Update()
 	{
 		pComponent->Update();
 	}
+	for (auto pChild : m_pChildren)
+	{
+		pChild->Update();
+	}
 }
 
 void pep::Object::Render() const
@@ -62,6 +66,10 @@ void pep::Object::Render() const
 	for (auto pComponent : m_pComponents)
 	{
 		pComponent->Render();
+	}
+	for (auto pChild : m_pChildren)
+	{
+		pChild->Render();
 	}
 }
 

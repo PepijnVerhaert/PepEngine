@@ -22,6 +22,8 @@ public:
 
 	void Disable();
 	void Enable();
+
+	void SetLevelLayoutComponent(LevelLayoutComponent* layout);
 private:
 	float m_X;
 	float m_Y;

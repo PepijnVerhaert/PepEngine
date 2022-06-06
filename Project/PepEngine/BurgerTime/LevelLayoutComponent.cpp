@@ -8,7 +8,7 @@ LevelLayoutComponent::LevelLayoutComponent(const std::weak_ptr<pep::Object>& obj
 	,m_GridOffset{ offset }
 {
 	std::vector<bool> fillVector{};
-	fillVector.resize(gridHeight, true);
+	fillVector.resize(gridHeight, false);
 	m_WalkableTiles.resize(gridWidth, fillVector);
 }
 
