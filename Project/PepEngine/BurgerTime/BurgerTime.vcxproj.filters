@@ -92,5 +92,8 @@
     <ClInclude Include="MovementControlComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyPrefab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

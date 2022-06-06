@@ -11,20 +11,26 @@ MovementControlComponent::MovementControlComponent(const std::weak_ptr<pep::Obje
 
 void MovementControlComponent::Update()
 {
+	float epsilon = 1.f;
+
 	glm::vec2 ownPos = m_pObject.lock()->GetWorldTransform().GetPosition();
 	glm::vec2 targetPos = m_pTarget->GetWorldTransform().GetPosition();
 
 	glm::vec2 distanceToTarget = targetPos - ownPos;
 
-	if (distanceToTarget.y > 0.f)
+	if (abs(distanceToTarget.y) > epsilon)
 	{
-		m_pMovement->MoveUp();
+		if (distanceToTarget.y > 0.f)
+		{
+			m_pMovement->MoveDown();
+		}
+		else
+		{
+			m_pMovement->MoveUp();
+		}
 	}
-	else
-	{
-		m_pMovement->MoveDown();
-	}
-	if (abs(distanceToTarget.y) * 1.5f < abs(distanceToTarget.x))
+
+	if (abs(distanceToTarget.x) > epsilon)
 	{
 		if (distanceToTarget.x > 0.f)
 		{

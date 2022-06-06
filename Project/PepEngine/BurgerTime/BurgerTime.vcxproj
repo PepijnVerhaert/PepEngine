@@ -177,6 +177,7 @@
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyPrefab.h" />
     <ClInclude Include="MovementControlComponent.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="LevelLayoutComponent.h" />

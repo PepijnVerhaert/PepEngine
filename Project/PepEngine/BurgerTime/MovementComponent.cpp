@@ -40,17 +40,32 @@ void MovementComponent::Update()
 		auto pObject = m_pObject.lock();
 		auto transform = pObject->GetLocalTransform();
 		auto pos = transform.GetPosition();
-		Direction dir{Direction::None};
+		Direction dirX{Direction::None};
+		Direction dirY{Direction::None};
 		if (m_X > 0.5f)
-			dir = Direction::right;
+		{
+			dirX = Direction::right;
+		}
 		else if (m_X < -0.5f)
-			dir = Direction::left;
-		else if (m_Y > 0.5f)
-			dir = Direction::down;
-		else if (m_Y < -0.5f)
-			dir = Direction::Up;
+		{
+			dirX = Direction::left;
+		}
 
-		if (m_pLevelLayout->MoveDistanceInDirection(dir, m_Speed * pep::GameTime::GetInstance().GetDeltaTime(), pos))
+		if (m_Y > 0.5f)
+		{
+			dirY = Direction::down;
+		}
+		else if (m_Y < -0.5f)
+		{
+			dirY = Direction::Up;
+		}
+
+		if (dirX!=Direction::None && m_pLevelLayout->MoveDistanceInDirection(dirX, m_Speed * pep::GameTime::GetInstance().GetDeltaTime(), pos))
+		{
+			transform.SetPosition(pos);
+			pObject->SetLocalTransform(transform);
+		}
+		else if (dirY != Direction::None && m_pLevelLayout->MoveDistanceInDirection(dirY, m_Speed * pep::GameTime::GetInstance().GetDeltaTime(), pos))
 		{
 			transform.SetPosition(pos);
 			pObject->SetLocalTransform(transform);

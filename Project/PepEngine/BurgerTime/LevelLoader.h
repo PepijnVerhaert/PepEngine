@@ -7,6 +7,7 @@
 #include "LevelLayoutComponent.h"
 #include "Object.h"
 #include "PlayerPrefab.h"
+#include "EnemyPrefab.h"
 
 
 void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pep::Object* pPlayer1, pep::Object* pPlayer2)
@@ -71,7 +72,30 @@ void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pe
 			}
 			if (levelByte & static_cast<char>(LevelByte::hotdog))
 			{
-
+				switch (gamemode)
+				{
+				case Gamemode::Single:
+				{
+					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1);
+					pHotdog->SetLocalTransform({ pos });
+					scene.Add(pHotdog);
+					break;
+				}
+				case Gamemode::Coop:
+				{
+					pep::Object* pHotdogTarget = pPlayer1;
+					if ((i / 2) % 2)
+					{
+						pHotdogTarget = pPlayer2;
+					}
+					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1);
+					pHotdog->SetLocalTransform({ pos });
+					scene.Add(pHotdog);
+					break;
+				}
+				default:
+					break;
+				}
 			}
 			if (levelByte & static_cast<char>(LevelByte::pickle))
 			{
