@@ -13,7 +13,7 @@
 
 void CreateTestScene()
 {
-	Gamemode gamemode = Gamemode::Coop;
+	Gamemode gamemode = Gamemode::Single;
 
 	auto scene = pep::SceneManager::GetInstance().CreateScene("Test");
 	pep::SceneManager::GetInstance().SetSceneActive("Test");

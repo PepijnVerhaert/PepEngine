@@ -106,6 +106,10 @@ void Object::SetParent(std::shared_ptr<Object> pChild, std::shared_ptr<Object> p
 void Object::SetTransformDirty()
 {
 	m_IsTransformDirty = true;
+	for (auto pChild : m_pChildren)
+	{
+		pChild->SetTransformDirty();
+	}
 }
 
 void Object::RemoveChild(std::shared_ptr<Object> pChild)

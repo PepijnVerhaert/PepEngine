@@ -2,6 +2,7 @@
 #include <iostream>
 #include "SoundInclude.h"
 #include "MovementComponent.h"
+#include "SprayPepperComponent.h"
 
 TestComponent::TestComponent(const std::weak_ptr<pep::Object>& object, MovementComponent* pMove)
 	:pep::BaseComponent(object)

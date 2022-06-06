@@ -33,7 +33,7 @@ void pep::TextureComponent::Render() const
 {
 	if (m_pTexture && m_IsVisible)
 	{
-		glm::vec2 pos{ m_pObject.lock()->GetLocalTransform().GetPosition() };
+		glm::vec2 pos{ m_pObject.lock()->GetWorldTransform().GetPosition() };
 		if (m_DifferentSize)
 		{
 			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, m_Width, m_Height);

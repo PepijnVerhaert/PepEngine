@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "PlayerPrefab.h"
 #include "EnemyPrefab.h"
+#include "EnemyHitboxComponent.h"
 
 
 void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pep::Object* pPlayer1, pep::Object* pPlayer2)
@@ -77,6 +78,12 @@ void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pe
 				case Gamemode::Single:
 				{
 					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1);
+					auto pHotdogHitbox = std::make_shared<EnemyHitboxComponent>(pHotdog, 24.f, 32.f, pHotdog->GetComponent<MovementComponent>().get());
+					pHotdog->AddComponent(pHotdogHitbox);
+					if (pPlayer1)
+						pPlayer1->GetComponent<SprayPepperComponent>()->AddObserver(pHotdogHitbox);
+					if (pPlayer2)
+						pPlayer2->GetComponent<SprayPepperComponent>()->AddObserver(pHotdogHitbox);
 					pHotdog->SetLocalTransform({ pos });
 					scene.Add(pHotdog);
 					break;
@@ -89,6 +96,12 @@ void LoadLevel(const std::string& file, pep::Scene& scene, Gamemode gamemode, pe
 						pHotdogTarget = pPlayer2;
 					}
 					auto pHotdog = CreateHotdog(layoutComponent.get(), false, pPlayer1);
+					auto pHotdogHitbox = std::make_shared<EnemyHitboxComponent>(pHotdog, 24.f, 32.f, pHotdog->GetComponent<MovementComponent>().get());
+					pHotdog->AddComponent(pHotdogHitbox);
+					if (pPlayer1)
+						pPlayer1->GetComponent<SprayPepperComponent>()->AddObserver(pHotdogHitbox);
+					if (pPlayer2)
+						pPlayer2->GetComponent<SprayPepperComponent>()->AddObserver(pHotdogHitbox);
 					pHotdog->SetLocalTransform({ pos });
 					scene.Add(pHotdog);
 					break;

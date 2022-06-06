@@ -166,6 +166,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
+    <ClCompile Include="EnemyHitboxComponent.cpp" />
     <ClCompile Include="MovementControlComponent.cpp" />
     <ClCompile Include="LevelLayoutComponent.cpp" />
     <ClCompile Include="MoveDownCommand.cpp" />
@@ -173,10 +174,14 @@
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="MoveRightCommand.cpp" />
     <ClCompile Include="MoveUpCommand.cpp" />
+    <ClCompile Include="SprayLeftCommand.cpp" />
+    <ClCompile Include="SprayPepperComponent.cpp" />
+    <ClCompile Include="SprayRightCommand.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyHitboxComponent.h" />
     <ClInclude Include="EnemyPrefab.h" />
     <ClInclude Include="MovementControlComponent.h" />
     <ClInclude Include="Helper.h" />
@@ -189,6 +194,10 @@
     <ClInclude Include="MoveUpCommand.h" />
     <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="ScenePrefab.h" />
+    <ClInclude Include="SprayLeftCommand.h" />
+    <ClInclude Include="SprayPepperComponent.h" />
+    <ClInclude Include="SprayRightCommand.h" />
+    <ClInclude Include="StunEvent.h" />
     <ClInclude Include="TestCommand.h" />
     <ClInclude Include="TestComponent.h" />
   </ItemGroup>
